@@ -60,13 +60,35 @@ export default function RestaurantExperience() {
 
     let context: gsap.Context | undefined;
     let isReady = false;
+    let disposed = false;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const buildScroll = () => {
-      if (isReady || !Number.isFinite(video.duration) || video.duration <= 0) return;
+    const buildScroll = async () => {
+      // Mobile Safari can report metadata before it has decoded a frame. ScrollTrigger
+      // needs a real frame available before currentTime is controlled by scroll.
+      if (disposed || isReady || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ||
+          !Number.isFinite(video.duration) || video.duration <= 0) return;
       isReady = true;
 
+      if (window.innerWidth < 700) {
+        try {
+          await video.play();
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+        } catch {
+          // The poster remains visible if the browser blocks playback.
+        }
+        video.pause();
+        if (disposed) return;
+        try {
+          video.currentTime = 0;
+        } catch {
+          // The video timeline below will start from its current frame.
+        }
+      }
+
+      if (disposed) return;
       context = gsap.context(() => {
         gsap.set(".chapter--interior, .chapter--book", { autoAlpha: 0, y: 22 });
         gsap.set(".book-cover", { rotationY: 0 });
@@ -76,7 +98,7 @@ export default function RestaurantExperience() {
             trigger: section,
             start: "top top",
             end: () => (window.innerWidth < 700 ? "+=1900" : "+=3200"),
-            scrub: 0.45,
+            scrub: window.innerWidth < 700 ? true : 0.45,
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
@@ -118,11 +140,14 @@ export default function RestaurantExperience() {
       ScrollTrigger.refresh();
     };
 
-    video.addEventListener("loadedmetadata", buildScroll);
-    if (video.readyState >= 1) buildScroll();
+    video.addEventListener("loadeddata", buildScroll);
+    video.addEventListener("canplay", buildScroll);
+    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) void buildScroll();
 
     return () => {
-      video.removeEventListener("loadedmetadata", buildScroll);
+      disposed = true;
+      video.removeEventListener("loadeddata", buildScroll);
+      video.removeEventListener("canplay", buildScroll);
       context?.revert();
     };
   }, []);
