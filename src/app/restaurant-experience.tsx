@@ -65,20 +65,61 @@ export default function RestaurantExperience() {
     let disposed = false;
     let mobileStoryActive = false;
     let videoTweenAdded = false;
+    let mobilePrimeInProgress = false;
+    let storyTimeline: gsap.core.Timeline | undefined;
     let desktopVideoReadyHandler: (() => void) | undefined;
     const isMobile = window.matchMedia("(max-width: 760px)").matches;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reducedMotion) return;
 
-    const startMobileVideo = () => {
-      if (disposed || !isMobile || !mobileStoryActive || !video.paused) return;
-      // Muted inline playback is started by the user's scroll gesture. Mobile
-      // browsers may defer downloading video until this point.
-      void video.play().catch(() => {});
+    const addMobileVideoTween = () => {
+      if (disposed || !isMobile || videoTweenAdded || !storyTimeline ||
+          video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ||
+          !Number.isFinite(video.duration) || video.duration <= 0) return;
+
+      videoTweenAdded = true;
+      video.pause();
+      try {
+        video.currentTime = 0;
+      } catch {
+        // Continue from the browser's current decoded frame if resetting is unavailable.
+      }
+      storyTimeline.fromTo(
+        video,
+        { currentTime: 0 },
+        { currentTime: video.duration, duration: 1, ease: "none", immediateRender: false },
+        0,
+      );
+      ScrollTrigger.refresh();
     };
 
-    const onCanPlay = () => startMobileVideo();
+    const primeMobileVideoForScrubbing = () => {
+      if (disposed || !isMobile || !mobileStoryActive ||
+          videoTweenAdded || mobilePrimeInProgress) return;
+
+      mobilePrimeInProgress = true;
+      // Mobile may defer decoding until playback starts. Warm the decoder once,
+      // pause immediately, then let scroll control currentTime.
+      void video.play().then(() => {
+        video.pause();
+        try {
+          video.currentTime = 0;
+        } catch {
+          // The scroll timeline can still control the current decoded frame.
+        }
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          mobilePrimeInProgress = false;
+          if (mobileStoryActive) addMobileVideoTween();
+        }));
+      }).catch(() => {
+        mobilePrimeInProgress = false;
+        // Already-decoded video can still be scrubbed if autoplay is blocked.
+        if (mobileStoryActive) addMobileVideoTween();
+      });
+    };
+
+    const onCanPlay = () => primeMobileVideoForScrubbing();
 
     context = gsap.context(() => {
       gsap.set(".chapter--interior, .chapter--book", { autoAlpha: 0, y: 22 });
@@ -95,12 +136,12 @@ export default function RestaurantExperience() {
           invalidateOnRefresh: true,
           onEnter: () => {
             mobileStoryActive = true;
-            startMobileVideo();
+            primeMobileVideoForScrubbing();
           },
           onEnterBack: () => {
             mobileStoryActive = true;
             if (isMobile && video.ended) video.currentTime = 0;
-            startMobileVideo();
+            primeMobileVideoForScrubbing();
           },
           onLeave: () => {
             mobileStoryActive = false;
@@ -112,10 +153,11 @@ export default function RestaurantExperience() {
           },
         },
       });
+      storyTimeline = story;
 
       if (isMobile) {
-        // Keep a visible scroll response even if a mobile browser delays or blocks
-        // video playback; this also makes the poster act as a moving camera shot.
+        // A small camera push remains scroll-driven; decoded video frames below
+        // scrub in sync with this same scroll progress.
         story.fromTo(
           video,
           { scale: 1, yPercent: 0, transformOrigin: "50% 54%" },
