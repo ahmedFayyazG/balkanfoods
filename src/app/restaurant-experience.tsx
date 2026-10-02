@@ -59,83 +59,124 @@ export default function RestaurantExperience() {
     if (!section || !video) return;
 
     let context: gsap.Context | undefined;
-    let isReady = false;
     let disposed = false;
+    let mobileStoryActive = false;
+    let videoTweenAdded = false;
+    let desktopVideoReadyHandler: (() => void) | undefined;
+    const isMobile = window.matchMedia("(max-width: 699px)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reducedMotion) return;
 
-    const buildScroll = () => {
-      // Mobile Safari can report metadata before it has decoded a frame. Wait for
-      // loadeddata, then create ScrollTrigger without waiting on autoplay permission.
-      if (disposed || isReady || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ||
-          !Number.isFinite(video.duration) || video.duration <= 0) return;
-      isReady = true;
-      video.pause();
+    const startMobileVideo = () => {
+      if (disposed || !isMobile || !mobileStoryActive || !video.paused) return;
+      // Muted inline playback is started by the user's scroll gesture. Mobile
+      // browsers may defer downloading video until this point.
+      void video.play().catch(() => {});
+    };
 
-      context = gsap.context(() => {
-        gsap.set(".chapter--interior, .chapter--book", { autoAlpha: 0, y: 22 });
-        gsap.set(".book-cover", { rotationY: 0 });
+    const onCanPlay = () => startMobileVideo();
 
-        const story = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => (window.innerWidth < 700 ? "+=1900" : "+=3200"),
-            scrub: window.innerWidth < 700 ? true : 0.45,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
+    context = gsap.context(() => {
+      gsap.set(".chapter--interior, .chapter--book", { autoAlpha: 0, y: 22 });
+      gsap.set(".book-cover", { rotationY: 0 });
+
+      const story = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => (isMobile ? "+=1900" : "+=3200"),
+          scrub: isMobile ? true : 0.45,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onEnter: () => {
+            mobileStoryActive = true;
+            startMobileVideo();
           },
-        });
+          onEnterBack: () => {
+            mobileStoryActive = true;
+            if (isMobile && video.ended) video.currentTime = 0;
+            startMobileVideo();
+          },
+          onLeave: () => {
+            mobileStoryActive = false;
+            if (isMobile) video.pause();
+          },
+          onLeaveBack: () => {
+            mobileStoryActive = false;
+            if (isMobile) video.pause();
+          },
+        },
+      });
 
+      desktopVideoReadyHandler = () => {
+        if (disposed || isMobile || videoTweenAdded ||
+            video.readyState < HTMLMediaElement.HAVE_METADATA ||
+            !Number.isFinite(video.duration) || video.duration <= 0) return;
+        videoTweenAdded = true;
         story.fromTo(
           video,
           { currentTime: 0 },
           { currentTime: video.duration, duration: 1, ease: "none", immediateRender: false },
           0,
         );
-        story.to(".chapter--arrival", { autoAlpha: 0, y: -18, duration: 0.08 }, 0.28);
-        story.fromTo(
-          ".chapter--interior",
-          { autoAlpha: 0, y: 22 },
-          { autoAlpha: 1, y: 0, duration: 0.08 },
-          0.39,
-        );
-        story.to(".chapter--interior", { autoAlpha: 0, y: -18, duration: 0.07 }, 0.69);
-        story.fromTo(
-          ".chapter--book",
-          { autoAlpha: 0, y: 22 },
-          { autoAlpha: 1, y: 0, duration: 0.08 },
-          0.74,
-        );
-        story.to(".chapter--book", { autoAlpha: 0, y: -12, duration: 0.06 }, 0.98);
+        ScrollTrigger.refresh();
+      };
 
-        const menuOpening = gsap.timeline({
-          scrollTrigger: {
-            trigger: "#menu",
-            start: "top top",
-            end: () => (window.innerWidth < 700 ? "+=700" : "+=1200"),
-            scrub: 0.45,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-        menuOpening.fromTo(".menu-book", { scale: 0.84, y: 28 }, { scale: 1, y: 0, duration: 0.25, ease: "none" }, 0);
-        menuOpening.to(".book-cover", { rotationY: -168, duration: 0.75, ease: "none" }, 0.2);
+      if (!isMobile) {
+        video.addEventListener("loadedmetadata", desktopVideoReadyHandler);
+        desktopVideoReadyHandler();
+      } else {
+        video.addEventListener("canplay", onCanPlay);
+      }
+
+      story.to(".chapter--arrival", { autoAlpha: 0, y: -18, duration: 0.08 }, 0.28);
+      story.fromTo(
+        ".chapter--interior",
+        { autoAlpha: 0, y: 22 },
+        { autoAlpha: 1, y: 0, duration: 0.08 },
+        0.39,
+      );
+      story.to(".chapter--interior", { autoAlpha: 0, y: -18, duration: 0.07 }, 0.69);
+      story.fromTo(
+        ".chapter--book",
+        { autoAlpha: 0, y: 22 },
+        { autoAlpha: 1, y: 0, duration: 0.08 },
+        0.74,
+      );
+      story.to(".chapter--book", { autoAlpha: 0, y: -12, duration: 0.06 }, 0.98);
+
+      const menuOpening = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#menu",
+          start: "top top",
+          end: () => (isMobile ? "+=700" : "+=1200"),
+          scrub: 0.45,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
       });
+      menuOpening.fromTo(
+        ".menu-book",
+        { scale: 0.84, y: 28 },
+        { scale: 1, y: 0, duration: 0.25, ease: "none" },
+        0,
+      );
+      menuOpening.to(".book-cover", { rotationY: -168, duration: 0.75, ease: "none" }, 0.2);
+    }, section);
 
-      ScrollTrigger.refresh();
-    };
-
-    video.addEventListener("loadeddata", buildScroll);
-    video.addEventListener("canplay", buildScroll);
-    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) void buildScroll();
+    ScrollTrigger.refresh();
 
     return () => {
       disposed = true;
-      video.removeEventListener("loadeddata", buildScroll);
-      video.removeEventListener("canplay", buildScroll);
+      mobileStoryActive = false;
+      // GSAP context reverts the animation; detach the video readiness listener too.
+      if (desktopVideoReadyHandler) {
+        video.removeEventListener("loadedmetadata", desktopVideoReadyHandler);
+      }
+      video.removeEventListener("canplay", onCanPlay);
       context?.revert();
     };
   }, []);
