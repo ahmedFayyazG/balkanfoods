@@ -63,7 +63,7 @@ export default function RestaurantExperience() {
     let mobileStoryActive = false;
     let videoTweenAdded = false;
     let desktopVideoReadyHandler: (() => void) | undefined;
-    const isMobile = window.matchMedia("(max-width: 699px)").matches;
+    const isMobile = window.matchMedia("(max-width: 760px)").matches;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reducedMotion) return;
@@ -87,7 +87,7 @@ export default function RestaurantExperience() {
           start: "top top",
           end: () => (isMobile ? "+=1900" : "+=3200"),
           scrub: isMobile ? true : 0.45,
-          pin: true,
+          pin: !isMobile,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onEnter: () => {
@@ -220,6 +220,7 @@ export default function RestaurantExperience() {
       </header>
 
       <section className="cinema" id="top" ref={cinemaRef} aria-label="Journey into Balkan Foods">
+        <div className="cinema-stage">
         <video
           ref={videoRef}
           className="cinema__video"
@@ -248,6 +249,7 @@ export default function RestaurantExperience() {
         </div>
         <div className="scroll-note"><span className="scroll-note__line" />Scroll to enter</div>
         <div className="scene-count" aria-hidden="true">01 <span /> 03</div>
+        </div>
       </section>
 
       <section className="menu-section" id="menu" aria-labelledby="menu-title">
