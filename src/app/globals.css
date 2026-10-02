@@ -20,7 +20,11 @@ button, input, select { font: inherit; }
 button { color: inherit; }
 ::selection { background: var(--gold-light); color: var(--ink); }
 
-.site-header { position: absolute; z-index: 20; inset: 0 0 auto; height: 86px; padding: 0 6.2vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #fff3; color: #f8f3e8; }
+.site-header { position: fixed; z-index: 20; inset: 0 0 auto; height: 86px; padding: 0 6.2vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #fff3; color: #f8f3e8; }
+.site-header--scrolled { background: #f3efe5f2; border-bottom-color: #28251c1a; color: var(--ink); backdrop-filter: blur(12px); }
+.site-header--scrolled .wordmark__sub { color: #8d7040; }
+.site-header--scrolled .nav-book { border-color: #967747; color: var(--ink); }
+.site-header--scrolled .nav-book span { color: #8d7040; }
 .wordmark { display: grid; gap: 4px; width: max-content; }
 .wordmark__name { font: 600 23px/1 var(--serif); letter-spacing: .025em; }
 .wordmark__sub { color: #d6c49b; font-size: 8px; letter-spacing: .24em; text-transform: uppercase; }

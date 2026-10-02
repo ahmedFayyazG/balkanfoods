@@ -44,6 +44,14 @@ export default function RestaurantExperience() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [category, setCategory] = useState<MenuCategory>("To Begin");
   const [bookingMessage, setBookingMessage] = useState("");
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const updateHeader = () => setHasScrolled(window.scrollY > 72);
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    return () => window.removeEventListener("scroll", updateHeader);
+  }, []);
 
   useEffect(() => {
     const section = cinemaRef.current;
@@ -133,7 +141,7 @@ export default function RestaurantExperience() {
 
   return (
     <main>
-      <header className="site-header">
+      <header className={`site-header${hasScrolled ? " site-header--scrolled" : ""}`}>
         <a className="wordmark" href="#top" aria-label="Balkan Foods home">
           <span className="wordmark__name">Balkan Foods</span>
           <span className="wordmark__sub">A table worth travelling for</span>
