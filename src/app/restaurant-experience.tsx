@@ -176,7 +176,7 @@ export default function RestaurantExperience() {
         0,
       );
       menuOpening.to(".book-cover", { rotationY: -168, duration: 0.75, ease: "none" }, 0.2);
-    }, section);
+    });
 
     ScrollTrigger.refresh();
 
