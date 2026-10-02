@@ -6,6 +6,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+// Mobile browser chrome changes visual viewport height during scroll. Keep
+// ScrollTrigger measurements stable while the address bar expands or collapses.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 type MenuCategory = "To Begin" | "From the Grill" | "Balkan Classics" | "Sweet Things";
 type Dish = { name: string; detail: string; price: string };
@@ -159,15 +162,23 @@ export default function RestaurantExperience() {
       story.to(".chapter--book", { autoAlpha: 0, y: -12, duration: 0.06 }, 0.98);
 
       const menuOpening = gsap.timeline({
-        scrollTrigger: {
-          trigger: "#menu",
-          start: "top top",
-          end: () => (isMobile ? "+=700" : "+=1200"),
-          scrub: 0.45,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
+        scrollTrigger: isMobile
+          ? {
+              trigger: ".menu-book",
+              start: "top 85%",
+              end: "center 40%",
+              scrub: true,
+              invalidateOnRefresh: true,
+            }
+          : {
+              trigger: "#menu",
+              start: "top top",
+              end: "+=1200",
+              scrub: 0.45,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
       });
       menuOpening.fromTo(
         ".menu-book",
@@ -178,9 +189,16 @@ export default function RestaurantExperience() {
       menuOpening.to(".book-cover", { rotationY: -168, duration: 0.75, ease: "none" }, 0.2);
     });
 
+    const refreshAfterLoad = () => ScrollTrigger.refresh();
+    if (document.readyState === "complete") {
+      refreshAfterLoad();
+    } else {
+      window.addEventListener("load", refreshAfterLoad, { once: true });
+    }
     ScrollTrigger.refresh();
 
     return () => {
+      window.removeEventListener("load", refreshAfterLoad);
       disposed = true;
       mobileStoryActive = false;
       // GSAP context reverts the animation; detach the video readiness listener too.
