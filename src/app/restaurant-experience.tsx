@@ -6,6 +6,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+// Mobile browsers resize the viewport as the URL bar collapses while scrolling.
+// Without this, every resize re-measures the pinned sections mid-scroll and the
+// scrubbed animation jumps or stalls on real devices (desktop emulators never do this).
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 type MenuCategory = "To Begin" | "From the Grill" | "Balkan Classics" | "Sweet Things";
 type Dish = { name: string; detail: string; price: string };
@@ -63,7 +67,7 @@ export default function RestaurantExperience() {
     let mobileStoryActive = false;
     let videoTweenAdded = false;
     let desktopVideoReadyHandler: (() => void) | undefined;
-    const isMobile = window.matchMedia("(max-width: 699px)").matches;
+    const isMobile = window.matchMedia("(max-width: 760px)").matches;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reducedMotion) return;
@@ -158,16 +162,26 @@ export default function RestaurantExperience() {
       );
       story.to(".chapter--book", { autoAlpha: 0, y: -12, duration: 0.06 }, 0.98);
 
+      // On phones the menu section is taller than the viewport, so pinning it
+      // would clip the book and tabs. Scrub the opening while it scrolls past instead.
       const menuOpening = gsap.timeline({
-        scrollTrigger: {
-          trigger: "#menu",
-          start: "top top",
-          end: () => (isMobile ? "+=700" : "+=1200"),
-          scrub: 0.45,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
+        scrollTrigger: isMobile
+          ? {
+              trigger: ".menu-book",
+              start: "top 85%",
+              end: "center 40%",
+              scrub: true,
+              invalidateOnRefresh: true,
+            }
+          : {
+              trigger: "#menu",
+              start: "top top",
+              end: "+=1200",
+              scrub: 0.45,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
       });
       menuOpening.fromTo(
         ".menu-book",
@@ -179,8 +193,12 @@ export default function RestaurantExperience() {
     }, section);
 
     ScrollTrigger.refresh();
+    // Re-measure once fonts/images/video have settled; mobile layout shifts late.
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", onLoad);
 
     return () => {
+      window.removeEventListener("load", onLoad);
       disposed = true;
       mobileStoryActive = false;
       // GSAP context reverts the animation; detach the video readiness listener too.
