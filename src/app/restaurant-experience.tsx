@@ -45,6 +45,7 @@ const categories = Object.keys(menu) as MenuCategory[];
 export default function RestaurantExperience() {
   const cinemaRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [category, setCategory] = useState<MenuCategory>("To Begin");
   const [bookingMessage, setBookingMessage] = useState("");
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -61,67 +62,61 @@ export default function RestaurantExperience() {
     const video = videoRef.current;
     if (!section || !video) return;
 
-    let context: gsap.Context | undefined;
     let disposed = false;
-    let mobileStoryActive = false;
     let videoTweenAdded = false;
-    let mobilePrimeInProgress = false;
-    let storyTimeline: gsap.core.Timeline | undefined;
     let desktopVideoReadyHandler: (() => void) | undefined;
     const isMobile = window.matchMedia("(max-width: 760px)").matches;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reducedMotion) return;
 
-    const addMobileVideoTween = () => {
-      if (disposed || !isMobile || videoTweenAdded || !storyTimeline ||
-          video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ||
-          !Number.isFinite(video.duration) || video.duration <= 0) return;
+    const FRAME_COUNT = 72;
+    const canvas = canvasRef.current;
+    const ctx = isMobile && canvas ? canvas.getContext("2d") : null;
+    const frames: (HTMLImageElement | undefined)[] = [];
+    const frameState = { frame: 0 };
+    let shownFrame = -1;
 
-      videoTweenAdded = true;
-      video.pause();
-      try {
-        video.currentTime = 0;
-      } catch {
-        // Continue from the browser's current decoded frame if resetting is unavailable.
+    // Cover-fit draw of the nearest already-loaded frame at or before `index`.
+    const drawFrame = (index: number) => {
+      if (!ctx || !canvas) return;
+      let img: HTMLImageElement | undefined;
+      for (let i = index; i >= 0 && !img; i--) {
+        if (frames[i]?.complete && frames[i]!.naturalWidth) img = frames[i];
       }
-      storyTimeline.fromTo(
-        video,
-        { currentTime: 0 },
-        { currentTime: video.duration, duration: 1, ease: "none", immediateRender: false },
-        0,
-      );
-      ScrollTrigger.refresh();
+      if (!img) return;
+      const cw = canvas.width;
+      const ch = canvas.height;
+      const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+      const w = img.naturalWidth * scale;
+      const h = img.naturalHeight * scale;
+      ctx.drawImage(img, (cw - w) / 2, (ch - h) * 0.52, w, h);
+      shownFrame = index;
     };
 
-    const primeMobileVideoForScrubbing = () => {
-      if (disposed || !isMobile || !mobileStoryActive ||
-          videoTweenAdded || mobilePrimeInProgress) return;
-
-      mobilePrimeInProgress = true;
-      // Mobile may defer decoding until playback starts. Warm the decoder once,
-      // pause immediately, then let scroll control currentTime.
-      void video.play().then(() => {
-        video.pause();
-        try {
-          video.currentTime = 0;
-        } catch {
-          // The scroll timeline can still control the current decoded frame.
-        }
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          mobilePrimeInProgress = false;
-          if (mobileStoryActive) addMobileVideoTween();
-        }));
-      }).catch(() => {
-        mobilePrimeInProgress = false;
-        // Already-decoded video can still be scrubbed if autoplay is blocked.
-        if (mobileStoryActive) addMobileVideoTween();
-      });
+    const sizeCanvas = () => {
+      if (!canvas) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(canvas.clientWidth * dpr);
+      canvas.height = Math.round(canvas.clientHeight * dpr);
+      drawFrame(Math.max(shownFrame, 0));
     };
 
-    const onCanPlay = () => primeMobileVideoForScrubbing();
+    if (ctx) {
+      // Image sequence instead of seeking a <video>: mobile browsers do not seek
+      // reliably from scroll, but drawing a still frame always works.
+      for (let i = 0; i < FRAME_COUNT; i++) {
+        const img = new Image();
+        img.decoding = "async";
+        img.onload = () => { if (i === 0 || i <= Math.round(frameState.frame)) drawFrame(Math.round(frameState.frame)); };
+        img.src = `/frames/f${String(i + 1).padStart(3, "0")}.webp`;
+        frames[i] = img;
+      }
+      sizeCanvas();
+      window.addEventListener("resize", sizeCanvas);
+    }
 
-    context = gsap.context(() => {
+    const context = gsap.context(() => {
       gsap.set(".chapter--interior, .chapter--book", { autoAlpha: 0, y: 22 });
       gsap.set(".book-cover", { rotationY: 0 });
 
@@ -134,34 +129,22 @@ export default function RestaurantExperience() {
           pin: !isMobile,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onEnter: () => {
-            mobileStoryActive = true;
-            primeMobileVideoForScrubbing();
-          },
-          onEnterBack: () => {
-            mobileStoryActive = true;
-            if (isMobile && video.ended) video.currentTime = 0;
-            primeMobileVideoForScrubbing();
-          },
-          onLeave: () => {
-            mobileStoryActive = false;
-            if (isMobile) video.pause();
-          },
-          onLeaveBack: () => {
-            mobileStoryActive = false;
-            if (isMobile) video.pause();
-          },
         },
       });
-      storyTimeline = story;
 
-      if (isMobile) {
-        // A small camera push remains scroll-driven; decoded video frames below
-        // scrub in sync with this same scroll progress.
+      if (ctx) {
         story.fromTo(
-          video,
-          { scale: 1, yPercent: 0, transformOrigin: "50% 54%" },
-          { scale: 1.13, yPercent: -1.5, duration: 1, ease: "none" },
+          frameState,
+          { frame: 0 },
+          {
+            frame: FRAME_COUNT - 1,
+            duration: 1,
+            ease: "none",
+            onUpdate: () => {
+              const f = Math.round(frameState.frame);
+              if (f !== shownFrame) drawFrame(f);
+            },
+          },
           0,
         );
       }
@@ -183,8 +166,6 @@ export default function RestaurantExperience() {
       if (!isMobile) {
         video.addEventListener("loadedmetadata", desktopVideoReadyHandler);
         desktopVideoReadyHandler();
-      } else {
-        video.addEventListener("canplay", onCanPlay);
       }
 
       story.to(".chapter--arrival", { autoAlpha: 0, y: -18, duration: 0.08 }, 0.28);
@@ -242,13 +223,12 @@ export default function RestaurantExperience() {
     return () => {
       window.removeEventListener("load", refreshAfterLoad);
       disposed = true;
-      mobileStoryActive = false;
       // GSAP context reverts the animation; detach the video readiness listener too.
       if (desktopVideoReadyHandler) {
         video.removeEventListener("loadedmetadata", desktopVideoReadyHandler);
       }
-      video.removeEventListener("canplay", onCanPlay);
-      context?.revert();
+      window.removeEventListener("resize", sizeCanvas);
+      context.revert();
     };
   }, []);
 
@@ -288,9 +268,10 @@ export default function RestaurantExperience() {
           poster="/videos/restaurant-poster.webp"
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           aria-label="A view travelling from the restaurant entrance into the dining room and toward the menu"
         />
+        <canvas ref={canvasRef} className="cinema__canvas" aria-hidden="true" />
         <div className="cinema__shade" />
         <div className="chapter chapter--arrival">
           <span className="eyebrow">Manchester · The Balkans at heart</span>

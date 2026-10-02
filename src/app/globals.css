@@ -37,7 +37,8 @@ button { color: inherit; }
 
 .cinema { height: 100svh; min-height: 620px; position: relative; overflow: hidden; background: #171916; color: #fff; }
 .cinema-stage { position: relative; width: 100%; height: 100%; overflow: hidden; }
-.cinema__video, .cinema__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cinema__video, .cinema__canvas, .cinema__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cinema__canvas { display: none; }
 .cinema__video { display: block; object-fit: cover; object-position: center 52%; }
 .cinema__shade { pointer-events: none; background: linear-gradient(90deg, #090a09a8, #090a0933 60%, #090a0920), linear-gradient(0deg, #070807a8, transparent 46%, #090a096b); }
 .chapter { position: absolute; z-index: 2; top: 50%; left: 50%; width: min(680px, 86vw); transform: translate(-50%, -43%); text-align: center; pointer-events: none; }
@@ -139,7 +140,8 @@ button { color: inherit; }
   .site-nav .nav-book { padding: 10px 11px; }
   .cinema { height: calc(100svh + 1900px); min-height: 0; overflow: visible; }
   .cinema-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
-  .cinema__video { object-position: center; }
+  .cinema__video { display: none; }
+  .cinema__canvas { display: block; }
   .cinema__shade { background: linear-gradient(0deg, #070807bb, #090a0930 65%, #090a0988); }
   .chapter { width: 90vw; }
   .chapter h1 { font-size: clamp(55px, 13vw, 82px); }
