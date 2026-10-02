@@ -110,6 +110,17 @@ export default function RestaurantExperience() {
         },
       });
 
+      if (isMobile) {
+        // Keep a visible scroll response even if a mobile browser delays or blocks
+        // video playback; this also makes the poster act as a moving camera shot.
+        story.fromTo(
+          video,
+          { scale: 1, yPercent: 0, transformOrigin: "50% 54%" },
+          { scale: 1.13, yPercent: -1.5, duration: 1, ease: "none" },
+          0,
+        );
+      }
+
       desktopVideoReadyHandler = () => {
         if (disposed || isMobile || videoTweenAdded ||
             video.readyState < HTMLMediaElement.HAVE_METADATA ||
