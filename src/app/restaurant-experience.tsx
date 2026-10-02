@@ -64,31 +64,14 @@ export default function RestaurantExperience() {
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const buildScroll = async () => {
-      // Mobile Safari can report metadata before it has decoded a frame. ScrollTrigger
-      // needs a real frame available before currentTime is controlled by scroll.
+    const buildScroll = () => {
+      // Mobile Safari can report metadata before it has decoded a frame. Wait for
+      // loadeddata, then create ScrollTrigger without waiting on autoplay permission.
       if (disposed || isReady || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ||
           !Number.isFinite(video.duration) || video.duration <= 0) return;
       isReady = true;
+      video.pause();
 
-      if (window.innerWidth < 700) {
-        try {
-          await video.play();
-          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-        } catch {
-          // The poster remains visible if the browser blocks playback.
-        }
-        video.pause();
-        if (disposed) return;
-        try {
-          video.currentTime = 0;
-        } catch {
-          // The video timeline below will start from its current frame.
-        }
-      }
-
-      if (disposed) return;
       context = gsap.context(() => {
         gsap.set(".chapter--interior, .chapter--book", { autoAlpha: 0, y: 22 });
         gsap.set(".book-cover", { rotationY: 0 });
@@ -105,7 +88,12 @@ export default function RestaurantExperience() {
           },
         });
 
-        story.to(video, { currentTime: video.duration, duration: 1, ease: "none" }, 0);
+        story.fromTo(
+          video,
+          { currentTime: 0 },
+          { currentTime: video.duration, duration: 1, ease: "none", immediateRender: false },
+          0,
+        );
         story.to(".chapter--arrival", { autoAlpha: 0, y: -18, duration: 0.08 }, 0.28);
         story.fromTo(
           ".chapter--interior",
