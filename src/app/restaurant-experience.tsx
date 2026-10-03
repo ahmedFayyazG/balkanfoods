@@ -92,7 +92,6 @@ export default function RestaurantExperience() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const dishScrollRef = useRef<HTMLElement>(null);
   const dishVideoRef = useRef<HTMLVideoElement>(null);
-  const [category, setCategory] = useState<MenuCategory>("Red Wine");
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
@@ -163,7 +162,6 @@ export default function RestaurantExperience() {
 
     const context = gsap.context(() => {
       gsap.set(".chapter--interior, .chapter--book", { autoAlpha: 0, y: 22 });
-      gsap.set(".book-cover", { rotationY: 0 });
 
       const story = gsap.timeline({
         scrollTrigger: {
@@ -229,32 +227,6 @@ export default function RestaurantExperience() {
       );
       story.to(".chapter--book", { autoAlpha: 0, y: -12, duration: 0.06 }, 0.98);
 
-      const menuOpening = gsap.timeline({
-        scrollTrigger: isMobile
-          ? {
-              trigger: ".menu-book",
-              start: "top 85%",
-              end: "center 40%",
-              scrub: true,
-              invalidateOnRefresh: true,
-            }
-          : {
-              trigger: "#menu",
-              start: "top top",
-              end: "+=1200",
-              scrub: 0.45,
-              pin: true,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
-            },
-      });
-      menuOpening.fromTo(
-        ".menu-book",
-        { scale: 0.84, y: 28 },
-        { scale: 1, y: 0, duration: 0.25, ease: "none" },
-        0,
-      );
-      menuOpening.to(".book-cover", { rotationY: -168, duration: 0.75, ease: "none" }, 0.2);
     });
 
     const refreshAfterLoad = () => ScrollTrigger.refresh();
@@ -377,8 +349,8 @@ export default function RestaurantExperience() {
     };
   }, []);
 
-  const dishes = menu[category];
-  const pageBreak = Math.ceil(dishes.length / 2);
+  const menuColumns = [categories.slice(0, 4), categories.slice(4)];
+  const categoryId = (item: MenuCategory) => `menu-${item.toLowerCase().replace(/\s+/g, "-")}`;
 
   return (
     <main>
@@ -426,35 +398,50 @@ export default function RestaurantExperience() {
         </div>
       </section>
 
-      <section className="menu-section" id="menu" aria-labelledby="menu-title">
+      <section className="menu-section menu-section--complete" id="menu" aria-labelledby="menu-title">
         <div className="menu-heading">
           <h2 id="menu-title">The drinks menu</h2>
-          <p>Wine, beer, spirits and soft drinks. Browse the drinks list below.</p>
+          <p>Every category and listed item, together in one menu book.</p>
         </div>
-        <div className="book-wrap">
-          <div className="menu-book" aria-label={`${category} menu`}>
-            <div className="book-spine" aria-hidden="true" />
-            <div className="book-pages">
-              <MenuBookPage items={dishes.slice(0, pageBreak)} category={category} page={categories.indexOf(category) * 2 + 1} side="left" />
-              <MenuBookPage items={dishes.slice(pageBreak)} category={category} page={categories.indexOf(category) * 2 + 2} side="right" />
-            </div>
-            <div className="book-cover" aria-hidden="true">
-              <span className="cover-small">E.D BALLKAN FOOD · SHEFFIELD</span>
-              <span className="cover-rule" />
-              <span className="cover-title">The<br /><em>Menu</em></span>
-              <span className="cover-bottom">GOOD FOOD · GOOD COMPANY</span>
-              <span className="cover-stamp">BF</span>
-            </div>
+        <nav className="menu-index" aria-label="Jump to a drinks category">
+          {categories.map((item) => (
+            <a key={item} href={`#${categoryId(item)}`}>{item}<span>↓</span></a>
+          ))}
+        </nav>
+        <div className="full-menu-book">
+          <div className="full-menu-book__top">
+            <span>E.D BALLKAN FOOD · SHEFFIELD</span>
+            <span>DRINKS</span>
           </div>
-          <div className="menu-controls" aria-label="Menu chapters">
-            {categories.map((item, index) => (
-              <button key={item} type="button" className={`chapter-tab${category === item ? " is-active" : ""}`} aria-pressed={category === item} onClick={() => setCategory(item)}>
-                <span>0{index + 1}</span>{item}
-              </button>
+          <div className="full-menu-pages">
+            {menuColumns.map((column, columnIndex) => (
+              <div className="full-menu-page" key={columnIndex}>
+                {column.map((item) => (
+                  <section className="full-menu-category" id={categoryId(item)} key={item} aria-labelledby={`${categoryId(item)}-title`}>
+                    <h3 id={`${categoryId(item)}-title`}>{item}</h3>
+                    <div className="full-menu-list">
+                      {menu[item].map((drink) => (
+                        <article className="full-menu-row" key={drink.name}>
+                          <div className="full-menu-row__top">
+                            <h4>{drink.name}</h4>
+                            <span>{drink.price}</span>
+                          </div>
+                          <p>{drink.detail}</p>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+                ))}
+                <span className="full-menu-page__number">0{columnIndex + 1}</span>
+              </div>
             ))}
           </div>
-          <p className="menu-note">Select a chapter to turn the pages. <a href={encodeURI("/images/Balkan Food Restaurant 278x297mm Drink Menu 21May25 2.pdf")} target="_blank" rel="noreferrer">View the original menu ↗</a></p>
+          <div className="full-menu-book__bottom">
+            <span>DRINKS MENU</span>
+            <a href={encodeURI("/images/Balkan Food Restaurant 278x297mm Drink Menu 21May25 2.pdf")} target="_blank" rel="noreferrer">Open original menu ↗</a>
+          </div>
         </div>
+        <p className="menu-note">This section shows the drinks menu supplied by the restaurant.</p>
       </section>
 
       <section className="story-section" id="story">
@@ -594,22 +581,3 @@ export default function RestaurantExperience() {
   );
 }
 
-function MenuBookPage({ items, category, page, side }: { items: Drink[]; category: MenuCategory; page: number; side: "left" | "right" }) {
-  return (
-    <div className={`book-page book-page--${side}`}>
-      {side === "left" && <h3>{category}</h3>}
-      <div className="book-menu-list">
-        {items.map((item) => (
-          <div className="book-menu-item" key={item.name}>
-            <div className="book-menu-item__top">
-              <h4>{item.name}</h4>
-              <span>{item.price}</span>
-            </div>
-            <p>{item.detail}</p>
-          </div>
-        ))}
-      </div>
-      <span className="page-number">{String(page).padStart(2, "0")}</span>
-    </div>
-  );
-}
