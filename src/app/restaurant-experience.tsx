@@ -416,7 +416,25 @@ export default function RestaurantExperience() {
         </div>
       </section>
 
-      <section className="menu-section menu-section--complete" id="menu" aria-labelledby="menu-title">
+      <section className="menu-section menu-section--complete menu-section--food" id="menu" aria-labelledby="food-menu-title">
+        <div className="menu-heading">
+          <h2 id="food-menu-title">The food menu</h2>
+          <p>Browse the full food menu from E.D Ballkan Food.</p>
+        </div>
+        <div className="food-menu-document">
+          <iframe
+            title="E.D Ballkan Food full food menu"
+            src={encodeURI("/images/Balkan Food Restaurant A3 Folded Menu (6 November 2025).pdf")}
+            loading="lazy"
+          />
+        </div>
+        <div className="food-menu-actions">
+          <a href={encodeURI("/images/Balkan Food Restaurant A3 Folded Menu (6 November 2025).pdf")} target="_blank" rel="noreferrer">Open full food menu ↗</a>
+          <a href="#drinks-menu">Continue to drinks menu ↓</a>
+        </div>
+      </section>
+
+      <section className="menu-section menu-section--complete" id="drinks-menu" aria-labelledby="menu-title">
         <div className="menu-heading">
           <h2 id="menu-title">The drinks menu</h2>
           <p>Every category and listed item, together in one menu book.</p>
@@ -525,7 +543,7 @@ export default function RestaurantExperience() {
             </article>
             <article className="dish-scroll__cue dish-scroll__cue--cta">
               <h2>Browse<br />the drinks list.</h2>
-              <a href="#menu">See the drinks menu <span aria-hidden="true">↗</span></a>
+              <a href="#drinks-menu">See the drinks menu <span aria-hidden="true">↗</span></a>
             </article>
           </div>
           <div className="dish-scroll__progress" aria-hidden="true"><span className="dish-scroll__progress-bar" /></div>
@@ -538,7 +556,7 @@ export default function RestaurantExperience() {
           <div>
             <h2 id="signature-title">From our<br /><em>restaurant.</em></h2>
           </div>
-          <a className="signature-all" href="#menu">View the drinks list <span aria-hidden="true">↗</span></a>
+          <a className="signature-all" href="#drinks-menu">View the drinks list <span aria-hidden="true">↗</span></a>
         </div>
         <div className="signature-rail restaurant-photo-rail" aria-label="More restaurant photographs">
           {[
@@ -587,7 +605,7 @@ export default function RestaurantExperience() {
           <a className="wordmark" href="#top" aria-label="E.D Ballkan Food home"><span className="wordmark__name">E.D Ballkan Food</span><span className="wordmark__sub">Albanian restaurant · Sheffield</span></a>
           <p className="footer-line">A table in Sheffield.<br />233 Abbeydale Road, S7 1FJ</p>
           <div className="footer-links">
-            <a href="#menu">Drinks menu</a>
+            <a href="#drinks-menu">Drinks menu</a>
             <a href="https://www.google.com/maps/search/?api=1&query=E.D+Ballkan+Food%2C+233+Abbeydale+Road%2C+Sheffield%2C+S7+1FJ" target="_blank" rel="noreferrer">Directions ↗</a>
             <a href="https://www.instagram.com/e.d_ballkan_food/" target="_blank" rel="noreferrer">Instagram ↗</a>
             <a href="tel:01146989760">Call the restaurant ↗</a>
