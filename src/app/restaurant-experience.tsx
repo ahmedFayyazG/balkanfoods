@@ -421,17 +421,14 @@ export default function RestaurantExperience() {
         <canvas ref={canvasRef} className="cinema__canvas" aria-hidden="true" />
         <div className="cinema__shade" />
         <div className="chapter chapter--arrival">
-          <span className="eyebrow">Manchester · The Balkans at heart</span>
           <h1>Come in.<br /><em>Stay awhile.</em></h1>
           <p>Good food, generous tables, and evenings that take their time.</p>
         </div>
         <div className="chapter chapter--interior">
-          <span className="eyebrow">A little warmth from the Balkans</span>
           <h2>Pull up a chair.</h2>
           <p>Cooked slowly. Grilled over fire. Shared with everyone.</p>
         </div>
         <div className="chapter chapter--book">
-          <span className="eyebrow">The evening starts here</span>
           <h2>Take a look<br /><em>at the menu.</em></h2>
           <p>Scroll on to open our menu book.</p>
         </div>
@@ -442,7 +439,6 @@ export default function RestaurantExperience() {
 
       <section className="menu-section" id="menu" aria-labelledby="menu-title">
         <div className="menu-heading">
-          <span className="eyebrow">A little something for everyone</span>
           <h2 id="menu-title">The drinks menu</h2>
           <p>Wines, spirits, Albanian favourites and something for every table.</p>
         </div>
@@ -475,7 +471,6 @@ export default function RestaurantExperience() {
       <section className="story-section" id="story">
         <div className="story-section__image"><Image src={encodeURI("/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (1).jpeg")} alt="A warmly set restaurant table with a shared Balkan meal" fill priority sizes="(max-width: 760px) 86vw, 40vw" /><span>Made for<br />the middle<br />of the table</span></div>
         <div className="story-section__copy">
-          <span className="eyebrow eyebrow--dark">Our table, your table</span>
           <h2>From the Balkans,<br /><em>with warmth.</em></h2>
           <p>Inspired by the generous food and long evenings of the Balkans, our kitchen brings familiar flavours to the table. Tear the bread, pass the ajvar, order another round. There’s always room for one more.</p>
           <a className="text-link" href="#menu">Open the menu <span>↓</span></a>
@@ -484,7 +479,6 @@ export default function RestaurantExperience() {
 
       <section className="balkan-table" aria-labelledby="balkan-table-title">
         <div className="balkan-table__heading">
-          <span className="eyebrow eyebrow--dark">The Balkan table</span>
           <h2 id="balkan-table-title">Food made for<br /><em>passing around.</em></h2>
           <p>Start with something small. Order another plate for the middle. Leave room for something sweet.</p>
         </div>
@@ -524,27 +518,22 @@ export default function RestaurantExperience() {
           <div className="dish-scroll__shade" aria-hidden="true" />
           <div className="dish-scroll__copy">
             <article className="dish-scroll__cue">
-              <span className="dish-scroll__eyebrow">01 · From our kitchen</span>
               <h2>A table made<br />for sharing.</h2>
               <p>Generous plates, familiar flavours, and room for everyone.</p>
             </article>
             <article className="dish-scroll__cue">
-              <span className="dish-scroll__eyebrow">02 · Straight from the grill</span>
               <h2>Smoky, warm,<br />made to order.</h2>
               <p>Fire-grilled favourites, served fresh to the table.</p>
             </article>
             <article className="dish-scroll__cue">
-              <span className="dish-scroll__eyebrow">03 · The Balkan table</span>
               <h2>Pass a plate.<br />Stay a while.</h2>
               <p>A little of everything tastes better together.</p>
             </article>
             <article className="dish-scroll__cue">
-              <span className="dish-scroll__eyebrow">04 · A sweet finish</span>
               <h2>Save room<br />for one more.</h2>
               <p>Make an evening of it, from first plate to last bite.</p>
             </article>
             <article className="dish-scroll__cue dish-scroll__cue--cta">
-              <span className="dish-scroll__eyebrow">05 · Find your favourite</span>
               <h2>Explore<br />the menu.</h2>
               <a href="#menu">Open the drinks menu <span aria-hidden="true">↗</span></a>
             </article>
@@ -557,7 +546,6 @@ export default function RestaurantExperience() {
       <section className="signature-section" aria-labelledby="signature-title">
         <div className="signature-heading">
           <div>
-            <span className="eyebrow">From our kitchen</span>
             <h2 id="signature-title">The ones you<br /><em>come back for.</em></h2>
           </div>
           <a className="signature-all" href="#menu">Explore the menu <span aria-hidden="true">↗</span></a>
@@ -590,7 +578,6 @@ export default function RestaurantExperience() {
           <span className="room-story__art-caption">A long evening<br />starts here.</span>
         </div>
         <div className="room-story__copy">
-          <span className="eyebrow eyebrow--dark">Stay a little longer</span>
           <h2 id="room-story-title">A room for<br /><em>one more story.</em></h2>
           <p>Good food brings everyone in. The long conversations are what keep the evening going. Pull up a chair, pass a plate, and make yourself at home.</p>
           <a className="text-link" href="#book">Save your seat <span>↗</span></a>
@@ -599,7 +586,6 @@ export default function RestaurantExperience() {
 
       <section className="visit-section" id="visit">
         <div className="visit-copy">
-          <span className="eyebrow">Make an evening of it</span>
           <h2>A seat at<br /><em>our table.</em></h2>
           <p>Come hungry. Leave happy. We’ll keep a place for you.</p>
           <div className="visit-details">
@@ -610,7 +596,6 @@ export default function RestaurantExperience() {
           </div>
         </div>
         <form className="booking-card" id="book" onSubmit={submitBooking}>
-          <span className="eyebrow eyebrow--dark">Your evening, made</span>
           <h3>Book a table</h3>
           <label>Your name<input name="name" autoComplete="name" placeholder="Name" required /></label>
           <div className="form-row">
@@ -636,7 +621,6 @@ export default function RestaurantExperience() {
 function MenuBookPage({ items, category, page, side }: { items: Drink[]; category: MenuCategory; page: number; side: "left" | "right" }) {
   return (
     <div className={`book-page book-page--${side}`}>
-      <span className="page-kicker">{side === "left" ? "Balkan Foods · Manchester" : "From our drinks list"}</span>
       {side === "left" && <h3>{category}</h3>}
       <div className="book-menu-list">
         {items.map((item) => (
