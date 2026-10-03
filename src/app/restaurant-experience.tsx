@@ -322,43 +322,22 @@ export default function RestaurantExperience() {
       handleSeeked = catchUpAfterSeek;
       video.addEventListener("seeked", catchUpAfterSeek);
 
+      const updateScene = (progress: number) => {
+        seekVideo(progress);
+        const activeCue = Math.min(cues.length - 1, Math.floor(progress * cues.length));
+        cues.forEach((cue, index) => cue.classList.toggle("is-active", index === activeCue));
+        if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
+      };
+
       context = gsap.context(() => {
         ScrollTrigger.create({
           trigger: section,
           start: "top top",
           end: "bottom bottom",
           invalidateOnRefresh: true,
-          onUpdate: (self) => seekVideo(self.progress),
-          onRefresh: (self) => seekVideo(self.progress),
+          onUpdate: (self) => updateScene(self.progress),
+          onRefresh: (self) => updateScene(self.progress),
         });
-
-        const captions = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.25,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        const cueSpacing = 0.2;
-        cues.forEach((cue, index) => {
-          const at = 0.025 + index * cueSpacing;
-          captions.fromTo(
-            cue,
-            { autoAlpha: 0, y: 18 },
-            { autoAlpha: 1, y: 0, duration: 0.035, ease: "none" },
-            at,
-          );
-          if (index < cues.length - 1) {
-            captions.to(cue, { autoAlpha: 0, y: -10, duration: 0.035, ease: "none" }, at + 0.15);
-          }
-        });
-
-        if (progressBar) {
-          captions.fromTo(progressBar, { scaleX: 0 }, { scaleX: 1, duration: 1, ease: "none" }, 0);
-        }
       }, section);
 
       ScrollTrigger.refresh();
