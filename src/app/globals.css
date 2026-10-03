@@ -470,3 +470,16 @@ img { border-radius: 4px; }
   .menu-controls { margin-top: 19px; }
   .chapter-tab { padding: 10px 12px; }
 }
+
+.story-section__image { background: #6a5140; }
+.story-section__image:before {
+  inset: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: linear-gradient(0deg, #171310a8 0%, #17131020 48%, transparent 72%) !important;
+  box-shadow: none !important;
+}
+.story-section__image:after { display: none !important; }
+.room-story__art:before {
+  background: linear-gradient(0deg, #171310a0 0%, #17131016 55%, transparent 76%) !important;
+}
