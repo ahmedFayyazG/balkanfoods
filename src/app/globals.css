@@ -26,7 +26,9 @@ button { color: inherit; }
 .site-header--scrolled .wordmark__sub { color: #9d0c27; }
 .site-header--scrolled .nav-book { border-color: #9d0c27; color: var(--ink); }
 .site-header--scrolled .nav-book span { color: #9d0c27; }
-.wordmark { display: grid; gap: 4px; width: max-content; }
+.wordmark { display: flex; align-items: center; gap: 11px; width: max-content; }
+.wordmark__logo { width: 46px; height: 50px; flex: 0 0 auto; object-fit: contain; }
+.wordmark__copy { display: grid; gap: 4px; }
 .wordmark__name { font: 400 23px/1 var(--serif); letter-spacing: .025em; }
 .wordmark__sub { color: #e31837; font-size: 8px; letter-spacing: .24em; text-transform: uppercase; }
 .site-nav { display: flex; align-items: center; gap: clamp(18px, 3vw, 46px); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; }
