@@ -282,7 +282,7 @@ export default function RestaurantExperience() {
   useEffect(() => {
     const section = dishScrollRef.current;
     const video = dishVideoRef.current;
-    if (!section || !video) return;
+    if (!section || !video || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const cues = gsap.utils.toArray<HTMLElement>(".dish-scroll__cue", section);
     const progressBar = section.querySelector<HTMLElement>(".dish-scroll__progress-bar");
