@@ -715,3 +715,148 @@ img { border-radius: 4px; }
   /* Scrolling still controls the footage; only decorative transitions are reduced. */
   .dish-scroll__cue { transition: none; }
 }
+
+
+/* E.D Ballkan Food: editorial photo led layout and useful local details */
+.food-photo-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px !important;
+}
+.food-photo {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #ded5c9;
+}
+.food-photo:nth-child(2), .food-photo:nth-child(5) { margin-top: 48px; }
+.food-photo img, .restaurant-photo-card__image img { object-fit: cover; transition: transform .7s cubic-bezier(.2,.65,.25,1); }
+.food-photo:hover img, .restaurant-photo-card:hover img { transform: scale(1.035); }
+.food-photo figcaption {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-shadow: 0 1px 8px #0009;
+}
+.balkan-table { background: #f5f1e9; }
+.balkan-table__heading h2, .signature-heading h2 { color: #191816; }
+.balkan-table__heading > p { color: #625e57; }
+.signature-section {
+  background: #f5f1e9;
+  color: #191816;
+  padding-top: 40px;
+}
+.signature-heading { margin-bottom: 28px; }
+.signature-heading h2 { font-size: clamp(40px, 5vw, 66px); }
+.signature-all { color: #7c1c25; border-color: #7c1c25; }
+.restaurant-photo-rail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 18px;
+}
+.restaurant-photo-card {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+}
+.restaurant-photo-card__image {
+  position: relative;
+  aspect-ratio: 4 / 4.7;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #ded5c9;
+}
+.restaurant-photo-card figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 2px 0;
+  color: #625e57;
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+.restaurant-photo-card figcaption span { color: #7c1c25; }
+.visit-section {
+  grid-template-columns: minmax(0,1.2fr) minmax(230px,.5fr);
+  gap: 5vw;
+  background: #1b1917;
+  padding-block: clamp(70px, 9vw, 120px);
+}
+.visit-copy h2 { font-size: clamp(44px, 6vw, 76px); }
+.visit-copy > p { color: #d4c8b8; }
+.visit-details span { color: #c69a64; }
+.visit-details p, .visit-details a { color: #f5f1e9; text-decoration: none; line-height: 1.7; }
+.visit-details a:hover, .footer-links a:hover { color: #d5ad79; }
+.visit-actions { display: grid; gap: 14px; align-content: center; }
+.visit-actions .gold-button {
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 21px;
+  border: 0;
+  border-radius: 2px;
+  background: #c69a64;
+  color: #191816;
+  text-decoration: none;
+  font-size: 13px;
+}
+.visit-call {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid #f5f1e969;
+  color: #f5f1e9;
+  text-decoration: none;
+  font-size: 13px;
+}
+.site-footer {
+  display: block;
+  padding: 50px 8vw 20px;
+  background: #11100f;
+  color: #f5f1e9;
+}
+.footer-main {
+  display: grid;
+  grid-template-columns: 1.15fr .9fr 1fr;
+  align-items: start;
+  gap: 42px;
+  padding-bottom: 42px;
+}
+.footer-main .wordmark { color: #f5f1e9; }
+.footer-line { margin: 0; color: #c9c0b5; font-size: 13px; line-height: 1.8; }
+.footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; }
+.footer-links a, .footer-bottom a { color: #f5f1e9; text-decoration: none; font-size: 12px; }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #ffffff2b;
+  color: #aaa29a;
+  font-size: 11px;
+}
+@media (max-width: 760px) {
+  .food-photo-grid { display: grid !important; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px !important; }
+  .food-photo { aspect-ratio: 3 / 4; border-radius: 8px; }
+  .food-photo:nth-child(2), .food-photo:nth-child(5) { margin-top: 20px; }
+  .restaurant-photo-rail { grid-template-columns: 1fr; gap: 18px; }
+  .restaurant-photo-card__image { aspect-ratio: 4 / 3; border-radius: 8px; }
+  .signature-section { padding: 48px 6vw 54px; }
+  .signature-heading { display: block; }
+  .signature-heading h2 { margin: 0 0 16px; }
+  .signature-heading .signature-all { display: inline-flex; }
+  .visit-section { grid-template-columns: 1fr; gap: 36px; padding: 70px 7vw; }
+  .visit-details { grid-template-columns: 1fr 1fr; gap: 18px; }
+  .site-footer { padding: 38px 7vw 20px; }
+  .footer-main { grid-template-columns: 1fr; gap: 24px; padding-bottom: 30px; }
+  .footer-links { grid-template-columns: 1fr 1fr; }
+}
