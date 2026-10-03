@@ -76,6 +76,9 @@ button { color: inherit; }
 .book-page { position: relative; min-width: 0; padding: clamp(23px, 4vw, 44px) clamp(24px, 4.3vw, 58px); background: linear-gradient(90deg, #f3eddf, #fbf8ef); }
 .book-page--left { border-right: 1px solid #d6cbb5; }
 .book-page--right { background: linear-gradient(90deg, #eee7d8, #f9f5eb); }
+.book-prompt { max-width: 255px; margin: 0; color: #706b61; font: italic 15px/1.65 var(--serif); }
+.book-page-mark { display: block; margin-top: 29px; color: #9b7a42; font-size: 19px; }
+.book-page-note { position: absolute; right: 28px; bottom: 20px; left: 28px; color: #8c7b5d; font: italic 11px/1.6 var(--serif); }
 .page-kicker { color: #927748; font-size: 7px; letter-spacing: .18em; text-transform: uppercase; }
 .book-page h3 { margin: 12px 0 20px; font: 500 clamp(22px, 2.4vw, 31px)/1.1 var(--serif); }
 .dish-list { display: grid; gap: clamp(12px, 1.4vw, 18px); }
@@ -98,6 +101,25 @@ button { color: inherit; }
 .chapter-tab span { color: var(--gold-light); font: 8px var(--sans); }
 .chapter-tab:hover, .chapter-tab.is-active { background: var(--gold-light); color: #211f1a; }
 .chapter-tab.is-active span { color: #6e592f; }
+.carousel-toolbar { width: min(980px, 88vw); margin: 22px auto 10px; display: flex; align-items: center; justify-content: space-between; }
+.carousel-toolbar p { margin: 0; color: #c4baaa; font-size: 9px; letter-spacing: .08em; }
+.carousel-toolbar p span { color: var(--gold-light); font-family: var(--serif); font-size: 15px; }
+.carousel-arrows { display: flex; gap: 7px; }
+.carousel-arrows button { width: 36px; height: 34px; border: 1px solid #a18e66; background: transparent; color: #f3e8d2; cursor: pointer; font-size: 17px; transition: background .2s,color .2s; }
+.carousel-arrows button:hover { background: var(--gold-light); color: #211f1a; }
+.dish-carousel { width: min(980px, 88vw); display: flex; gap: 14px; overflow-x: auto; padding: 0 0 12px; scroll-snap-type: x mandatory; scroll-padding-inline: 2px; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.dish-carousel::-webkit-scrollbar { display: none; }
+.dish-card { flex: 0 0 285px; overflow: hidden; scroll-snap-align: start; background: #f5f0e3; color: #2e2a22; box-shadow: 0 14px 30px #08080655; }
+.dish-card__photo { height: 190px; position: relative; display: grid; place-items: center; overflow: hidden; background: radial-gradient(ellipse at 51% 50%, #99764b 0, #493c2b 36%, #29271f 72%); }
+.dish-card__photo:before { content: ""; position: absolute; inset: 12px; border: 1px solid #d0b87855; }
+.photo-placeholder { position: relative; display: grid; justify-items: center; gap: 9px; color: #e7d7b5; font-size: 8px; letter-spacing: .2em; text-transform: uppercase; }
+.photo-placeholder__mark { font-size: 30px; color: #c7a864; }
+.dish-card__number { position: absolute; top: 18px; left: 19px; color: #f6eedc; font: 12px var(--serif); }
+.dish-card__body { min-height: 112px; padding: 17px 18px 19px; }
+.dish-card__heading { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.dish-card__heading h3 { margin: 0; font: 500 18px/1.15 var(--serif); }
+.dish-card__heading > span { flex: 0 0 auto; color: #876b3a; font: 16px var(--serif); }
+.dish-card__body p { margin: 8px 0 0; color: #777064; font-size: 10px; line-height: 1.55; }
 .menu-note { margin: 12px 0 0; color: #bcb3a1; font-size: 8px; text-align: center; }
 
 .visit-section { padding: 115px 11vw; display: grid; grid-template-columns: 1fr minmax(330px, 440px); gap: 8vw; align-items: center; background: #1e1d18; color: var(--paper); }
@@ -153,16 +175,26 @@ button { color: inherit; }
   .story-section h2 { font-size: clamp(40px, 11vw, 58px); }
   .menu-section { min-height: auto; padding: 75px 5vw 52px; }
   .menu-heading { margin-bottom: 24px; }
-  .menu-book { min-height: 0; aspect-ratio: .78 / 1; }
+  .menu-book { min-height: 0; aspect-ratio: 1.55 / 1; }
   .book-pages { grid-template-columns: 1fr; }
-  .book-page { padding: 25px 25px 29px; }
+  .book-page { padding: 22px 25px 29px; }
   .book-page--right { display: none; }
   .book-spine { left: 0; width: 7px; transform: none; opacity: .28; }
-  .book-page h3 { font-size: 26px; margin: 13px 0 22px; }
+  .book-page h3 { font-size: 25px; margin: 10px 0 12px; }
+  .book-prompt { max-width: 245px; font-size: 13px; }
+  .book-page-mark { margin-top: 14px; font-size: 15px; }
+  .book-page-note { bottom: 13px; font-size: 9px; }
   .dish-list { gap: 16px; }
   .dish-row h4 { font-size: 16px; }
   .dish-row p { font-size: 10px; }
-  .menu-controls { gap: 6px; margin-top: 17px; }
+  .menu-controls { width: 100%; justify-content: flex-start; flex-wrap: nowrap; gap: 6px; margin-top: 17px; overflow-x: auto; padding: 0 2px 5px; scrollbar-width: none; }
+  .menu-controls::-webkit-scrollbar { display: none; }
+  .chapter-tab { flex: 0 0 auto; }
+  .carousel-toolbar { width: 100%; margin-top: 18px; }
+  .dish-carousel { width: 100%; gap: 12px; padding-right: 8vw; }
+  .dish-card { flex-basis: min(82vw, 310px); }
+  .dish-card__photo { height: 170px; }
+  .dish-card__body { min-height: 104px; }
   .chapter-tab { padding: 9px 10px; font-size: 9px; }
   .menu-note { max-width: 340px; line-height: 1.5; }
   .visit-section { padding: 76px 7vw; grid-template-columns: 1fr; gap: 34px; }
