@@ -365,7 +365,7 @@ export default function RestaurantExperience() {
             priority
           />
           <Image
-            src="/images/ed-ballkan-food-red-sign.svg"
+            src="/images/ed-ballkan-food-black-sign.svg"
             alt=""
             width={44}
             height={44}
