@@ -669,3 +669,18 @@ img { border-radius: 4px; }
   .dish-scroll__cue p { max-width: 275px; font-size: 11px; }
   .dish-scroll__eyebrow { font-size: 7px; }
 }
+
+.dish-scroll__cue {
+  transition: opacity .3s ease, transform .3s ease, visibility 0s linear .3s;
+  transform: translateY(calc(-50% + 14px));
+}
+.dish-scroll__cue.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%);
+  transition-delay: 0s;
+}
+@media (max-width: 760px) {
+  .dish-scroll__cue { transform: translateY(calc(-50% + 12px)); }
+  .dish-scroll__cue.is-active { transform: translateY(-50%); }
+}
