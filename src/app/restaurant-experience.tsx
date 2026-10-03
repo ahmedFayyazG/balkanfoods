@@ -91,6 +91,8 @@ export default function RestaurantExperience() {
   const cinemaRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const dishScrollRef = useRef<HTMLElement>(null);
+  const dishVideoRef = useRef<HTMLVideoElement>(null);
   const [category, setCategory] = useState<MenuCategory>("Red Wine");
   const [bookingMessage, setBookingMessage] = useState("");
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -277,6 +279,70 @@ export default function RestaurantExperience() {
     };
   }, []);
 
+  useEffect(() => {
+    const section = dishScrollRef.current;
+    const video = dishVideoRef.current;
+    if (!section || !video) return;
+
+    const cues = gsap.utils.toArray<HTMLElement>(".dish-scroll__cue", section);
+    const progressBar = section.querySelector<HTMLElement>(".dish-scroll__progress-bar");
+    let context: gsap.Context | undefined;
+    let initialized = false;
+
+    const setupScrollAnimation = () => {
+      if (initialized || !Number.isFinite(video.duration) || video.duration <= 0) return;
+      initialized = true;
+      const duration = video.duration;
+
+      context = gsap.context(() => {
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.35,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        timeline.fromTo(
+          video,
+          { currentTime: 0 },
+          { currentTime: duration, duration: 1, ease: "none", immediateRender: false },
+          0,
+        );
+
+        const cueSpacing = 0.2;
+        cues.forEach((cue, index) => {
+          const at = 0.025 + index * cueSpacing;
+          timeline.fromTo(
+            cue,
+            { autoAlpha: 0, y: 18 },
+            { autoAlpha: 1, y: 0, duration: 0.035, ease: "none" },
+            at,
+          );
+          if (index < cues.length - 1) {
+            timeline.to(cue, { autoAlpha: 0, y: -10, duration: 0.035, ease: "none" }, at + 0.15);
+          }
+        });
+
+        if (progressBar) {
+          timeline.fromTo(progressBar, { scaleX: 0 }, { scaleX: 1, duration: 1, ease: "none" }, 0);
+        }
+      }, section);
+
+      ScrollTrigger.refresh();
+    };
+
+    video.addEventListener("loadedmetadata", setupScrollAnimation);
+    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) setupScrollAnimation();
+
+    return () => {
+      video.removeEventListener("loadedmetadata", setupScrollAnimation);
+      context?.revert();
+    };
+  }, []);
+
   const submitBooking = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -405,6 +471,50 @@ export default function RestaurantExperience() {
             <span className="table-chapter__copy">One more reason to stay.</span>
             <span className="table-chapter__arrow" aria-hidden="true">↗</span>
           </a>
+        </div>
+      </section>
+
+      <section className="dish-scroll" ref={dishScrollRef} aria-label="Balkan Foods dishes">
+        <div className="dish-scroll__stage">
+          <video
+            ref={dishVideoRef}
+            className="dish-scroll__video"
+            src="/videos/dishes.mp4"
+            muted
+            playsInline
+            preload="auto"
+            aria-label="Restaurant dishes presented across a table"
+          />
+          <div className="dish-scroll__shade" aria-hidden="true" />
+          <div className="dish-scroll__copy">
+            <article className="dish-scroll__cue">
+              <span className="dish-scroll__eyebrow">01 · From our kitchen</span>
+              <h2>A table made<br />for sharing.</h2>
+              <p>Generous plates, familiar flavours, and room for everyone.</p>
+            </article>
+            <article className="dish-scroll__cue">
+              <span className="dish-scroll__eyebrow">02 · Straight from the grill</span>
+              <h2>Smoky, warm,<br />made to order.</h2>
+              <p>Fire-grilled favourites, served fresh to the table.</p>
+            </article>
+            <article className="dish-scroll__cue">
+              <span className="dish-scroll__eyebrow">03 · The Balkan table</span>
+              <h2>Pass a plate.<br />Stay a while.</h2>
+              <p>A little of everything tastes better together.</p>
+            </article>
+            <article className="dish-scroll__cue">
+              <span className="dish-scroll__eyebrow">04 · A sweet finish</span>
+              <h2>Save room<br />for one more.</h2>
+              <p>Make an evening of it, from first plate to last bite.</p>
+            </article>
+            <article className="dish-scroll__cue dish-scroll__cue--cta">
+              <span className="dish-scroll__eyebrow">05 · Find your favourite</span>
+              <h2>Explore<br />the menu.</h2>
+              <a href="#menu">Open the drinks menu <span aria-hidden="true">↗</span></a>
+            </article>
+          </div>
+          <div className="dish-scroll__progress" aria-hidden="true"><span className="dish-scroll__progress-bar" /></div>
+          <span className="dish-scroll__hint">Scroll to savour the menu</span>
         </div>
       </section>
 
