@@ -286,48 +286,78 @@ export default function RestaurantExperience() {
 
     const cues = gsap.utils.toArray<HTMLElement>(".dish-scroll__cue", section);
     const progressBar = section.querySelector<HTMLElement>(".dish-scroll__progress-bar");
+    const mobileScrub = window.matchMedia("(max-width: 760px)").matches;
     let context: gsap.Context | undefined;
     let initialized = false;
+    let latestProgress = 0;
+    let mobileSeekPending = false;
+    let handleSeeked: (() => void) | undefined;
 
     const setupScrollAnimation = () => {
       if (initialized || !Number.isFinite(video.duration) || video.duration <= 0) return;
       initialized = true;
       const duration = video.duration;
 
+      const seekVideo = (progress: number) => {
+        latestProgress = progress;
+        const targetTime = progress * duration;
+        if (mobileScrub && (mobileSeekPending || video.seeking)) return;
+        if (Math.abs(video.currentTime - targetTime) < 0.025) return;
+
+        if (mobileScrub) mobileSeekPending = true;
+        try {
+          video.currentTime = targetTime;
+        } catch {
+          mobileSeekPending = false;
+        }
+      };
+
+      const catchUpAfterSeek = () => {
+        mobileSeekPending = false;
+        if (mobileScrub && Math.abs(video.currentTime - latestProgress * duration) > 0.05) {
+          requestAnimationFrame(() => seekVideo(latestProgress));
+        }
+      };
+
+      handleSeeked = catchUpAfterSeek;
+      video.addEventListener("seeked", catchUpAfterSeek);
+
       context = gsap.context(() => {
-        const timeline = gsap.timeline({
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: "bottom bottom",
+          invalidateOnRefresh: true,
+          onUpdate: (self) => seekVideo(self.progress),
+          onRefresh: (self) => seekVideo(self.progress),
+        });
+
+        const captions = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             start: "top top",
             end: "bottom bottom",
-            scrub: 0.35,
+            scrub: 0.25,
             invalidateOnRefresh: true,
           },
         });
 
-        timeline.fromTo(
-          video,
-          { currentTime: 0 },
-          { currentTime: duration, duration: 1, ease: "none", immediateRender: false },
-          0,
-        );
-
         const cueSpacing = 0.2;
         cues.forEach((cue, index) => {
           const at = 0.025 + index * cueSpacing;
-          timeline.fromTo(
+          captions.fromTo(
             cue,
             { autoAlpha: 0, y: 18 },
             { autoAlpha: 1, y: 0, duration: 0.035, ease: "none" },
             at,
           );
           if (index < cues.length - 1) {
-            timeline.to(cue, { autoAlpha: 0, y: -10, duration: 0.035, ease: "none" }, at + 0.15);
+            captions.to(cue, { autoAlpha: 0, y: -10, duration: 0.035, ease: "none" }, at + 0.15);
           }
         });
 
         if (progressBar) {
-          timeline.fromTo(progressBar, { scaleX: 0 }, { scaleX: 1, duration: 1, ease: "none" }, 0);
+          captions.fromTo(progressBar, { scaleX: 0 }, { scaleX: 1, duration: 1, ease: "none" }, 0);
         }
       }, section);
 
@@ -339,6 +369,7 @@ export default function RestaurantExperience() {
 
     return () => {
       video.removeEventListener("loadedmetadata", setupScrollAnimation);
+      if (handleSeeked) video.removeEventListener("seeked", handleSeeked);
       context?.revert();
     };
   }, []);
