@@ -638,3 +638,34 @@ img { border-radius: 4px; }
   .dish-scroll__progress,
   .dish-scroll__hint { display: none; }
 }
+
+/* Keep the 720p dish source at or below native dimensions to avoid soft enlargement. */
+.dish-scroll__video {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  width: min(100vw, 177.777svh, 1280px);
+  height: min(100svh, 56.25vw, 720px);
+  max-width: 1280px;
+  max-height: 720px;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+@media (max-width: 760px) {
+  .dish-scroll__video {
+    width: min(100vw, 177.777svh, 1280px);
+    height: min(100svh, 56.25vw, 720px);
+    object-fit: contain;
+  }
+  .dish-scroll__copy { align-items: center; padding: 0 7vw; }
+  .dish-scroll__cue {
+    top: 50%;
+    bottom: auto;
+    left: 7vw;
+    width: 86vw;
+    transform: translateY(-50%);
+  }
+  .dish-scroll__cue h2 { font-size: clamp(34px, 9.5vw, 46px); }
+  .dish-scroll__cue p { max-width: 275px; font-size: 11px; }
+  .dish-scroll__eyebrow { font-size: 7px; }
+}
