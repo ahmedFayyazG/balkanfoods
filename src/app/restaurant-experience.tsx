@@ -290,46 +290,52 @@ export default function RestaurantExperience() {
     let context: gsap.Context | undefined;
     let initialized = false;
     let latestProgress = 0;
+    let duration = 0;
     let mobileSeekPending = false;
-    let handleSeeked: (() => void) | undefined;
     let nativeScrollHandler: (() => void) | undefined;
     let nativeScrollFrame = 0;
 
-    const setupScrollAnimation = () => {
-      if (initialized || !Number.isFinite(video.duration) || video.duration <= 0) return;
-      initialized = true;
-      const duration = video.duration;
-
-      const seekVideo = (progress: number) => {
-        latestProgress = progress;
-        const targetTime = progress * duration;
-        if (mobileScrub && (mobileSeekPending || video.seeking)) return;
-        if (Math.abs(video.currentTime - targetTime) < 0.025) return;
-
-        if (mobileScrub) mobileSeekPending = true;
-        try {
-          video.currentTime = targetTime;
-        } catch {
-          mobileSeekPending = false;
-        }
-      };
-
-      const updateScene = (progress: number) => {
-        const clamped = Math.max(0, Math.min(1, progress));
-        seekVideo(clamped);
-        const activeCue = Math.min(cues.length - 1, Math.floor(clamped * cues.length));
-        cues.forEach((cue, index) => cue.classList.toggle("is-active", index === activeCue));
-        if (progressBar) progressBar.style.transform = `scaleX(${clamped})`;
-      };
-
-      const catchUpAfterSeek = () => {
+    const seekVideo = (progress: number) => {
+      if (!duration) return;
+      const targetTime = progress * duration;
+      if (mobileScrub && (mobileSeekPending || video.seeking)) return;
+      if (Math.abs(video.currentTime - targetTime) < 0.025) return;
+      if (mobileScrub) mobileSeekPending = true;
+      try {
+        video.currentTime = targetTime;
+      } catch {
         mobileSeekPending = false;
-        if (mobileScrub && Math.abs(video.currentTime - latestProgress * duration) > 0.05) {
-          requestAnimationFrame(() => updateScene(latestProgress));
-        }
-      };
-      handleSeeked = catchUpAfterSeek;
-      video.addEventListener("seeked", catchUpAfterSeek);
+      }
+    };
+
+    const updateScene = (progress: number) => {
+      const clamped = Math.max(0, Math.min(1, progress));
+      latestProgress = clamped;
+      seekVideo(clamped);
+      const activeCue = Math.min(cues.length - 1, Math.floor(clamped * cues.length));
+      cues.forEach((cue, index) => cue.classList.toggle("is-active", index === activeCue));
+      if (progressBar) progressBar.style.transform = `scaleX(${clamped})`;
+    };
+
+    const onSeeked = () => {
+      mobileSeekPending = false;
+      if (mobileScrub && duration && Math.abs(video.currentTime - latestProgress * duration) > 0.05) {
+        requestAnimationFrame(() => seekVideo(latestProgress));
+      }
+    };
+
+    const onMetadata = () => {
+      if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+      duration = video.duration;
+      updateScene(latestProgress);
+    };
+
+    const setupScrollAnimation = () => {
+      if (initialized) return;
+      initialized = true;
+      video.addEventListener("seeked", onSeeked);
+      video.addEventListener("loadedmetadata", onMetadata);
+      onMetadata();
 
       if (mobileScrub) {
         nativeScrollHandler = () => {
@@ -358,12 +364,12 @@ export default function RestaurantExperience() {
       }
     };
 
-    video.addEventListener("loadedmetadata", setupScrollAnimation);
-    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) setupScrollAnimation();
+    setupScrollAnimation();
+    video.addEventListener("loadedmetadata", onMetadata);
 
     return () => {
-      video.removeEventListener("loadedmetadata", setupScrollAnimation);
-      if (handleSeeked) video.removeEventListener("seeked", handleSeeked);
+      video.removeEventListener("loadedmetadata", onMetadata);
+      video.removeEventListener("seeked", onSeeked);
       if (nativeScrollHandler) {
         window.removeEventListener("scroll", nativeScrollHandler);
         window.removeEventListener("resize", nativeScrollHandler);
