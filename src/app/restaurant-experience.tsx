@@ -356,8 +356,18 @@ export default function RestaurantExperience() {
     <main>
       <header className={`site-header${hasScrolled ? " site-header--scrolled" : ""}`}>
         <a className="wordmark" href="#top" aria-label="E.D Ballkan Food home">
-          <span className="wordmark__name">E.D Ballkan Food</span>
-          <span className="wordmark__sub">Albanian restaurant · Sheffield</span>
+          <Image
+            src="/images/ed-ballkan-food-logo.svg"
+            alt=""
+            width={48}
+            height={52}
+            className="wordmark__logo"
+            priority
+          />
+          <span className="wordmark__copy">
+            <span className="wordmark__name">E.D Ballkan Food</span>
+            <span className="wordmark__sub">Albanian restaurant · Sheffield</span>
+          </span>
         </a>
         <nav className="site-nav" aria-label="Main navigation">
           <a href="#story">Our story</a>
