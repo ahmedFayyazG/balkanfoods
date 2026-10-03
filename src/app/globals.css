@@ -125,6 +125,56 @@ button { color: inherit; }
 .dish-card__body p { margin: 8px 0 0; color: #777064; font-size: 10px; line-height: 1.55; }
 .menu-note { margin: 12px 0 0; color: #bcb3a1; font-size: 8px; text-align: center; }
 
+.balkan-table { padding: 110px 9vw 120px; background: #f4f0e7; color: #25231e; }
+.balkan-table__heading { max-width: 700px; margin: 0 auto 56px; text-align: center; }
+.balkan-table__heading h2, .signature-heading h2, .room-story h2 { margin: 17px 0; font: 500 clamp(44px, 5.8vw, 76px)/.96 var(--serif); letter-spacing: -.05em; }
+.balkan-table__heading h2 em, .signature-heading h2 em, .room-story h2 em { color: #9b543e; font-weight: 500; }
+.balkan-table__heading > p { max-width: 465px; margin: 0 auto; color: #726b60; font: 13px/1.8 var(--sans); }
+.balkan-table__chapters { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 13px; max-width: 1200px; margin: auto; }
+.table-chapter { min-height: 325px; position: relative; display: flex; flex-direction: column; justify-content: end; padding: 26px; overflow: hidden; color: #f8f1e3; background-color: #25241e; isolation: isolate; }
+.table-chapter:before { content: ""; position: absolute; z-index: -1; inset: 0; background: radial-gradient(ellipse at 50% 58%, #aa784566, transparent 45%), linear-gradient(0deg, #11120fe8, #11120f00 80%); transition: transform .6s cubic-bezier(.2,.65,.25,1); }
+.table-chapter:hover:before { transform: scale(1.08); }
+.table-chapter--fire { background-image: radial-gradient(ellipse at 53% 40%, #8b4e2e 0, #493728 29%, #25241e 72%); }
+.table-chapter--share { background-image: radial-gradient(ellipse at 52% 42%, #c09b63 0, #5d4630 24%, #25241e 74%); }
+.table-chapter--sweet { background-image: radial-gradient(ellipse at 50% 39%, #914d41 0, #48332c 31%, #25241e 76%); }
+.table-chapter__number { margin-bottom: auto; color: #e1c995; font-size: 8px; letter-spacing: .19em; }
+.table-chapter__title { font: 500 clamp(24px, 2.4vw, 32px)/1.05 var(--serif); }
+.table-chapter__copy { margin-top: 7px; color: #e3dacb; font-size: 10px; }
+.table-chapter__arrow { position: absolute; right: 23px; bottom: 24px; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid #e1c99588; border-radius: 50%; color: #e1c995; transition: background .2s, color .2s; }
+.table-chapter:hover .table-chapter__arrow { background: #e1c995; color: #211f1a; }
+.signature-section { padding: 105px 9vw 96px; overflow: hidden; background: #1b1c17; color: #f3eee3; }
+.signature-heading { max-width: 1200px; margin: 0 auto 38px; display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+.signature-heading h2 { margin-bottom: 0; }
+.signature-all { display: inline-flex; align-items: center; gap: 13px; margin-bottom: 7px; padding-bottom: 9px; border-bottom: 1px solid #c8a96d; color: #eee5d4; font-size: 9px; letter-spacing: .15em; text-transform: uppercase; white-space: nowrap; }
+.signature-all span { color: #e1c995; font-size: 14px; }
+.signature-rail { max-width: 1200px; margin: auto; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+.signature-card { min-width: 0; background: #f1ecdf; color: #27241f; }
+.signature-card__image { height: clamp(230px, 27vw, 350px); position: relative; display: grid; place-items: center; overflow: hidden; background: radial-gradient(ellipse at 52% 52%, #a27349 0 15%, #543d2d 34%, #26251f 71%); }
+.signature-card__image:before { content: ""; position: absolute; width: 56%; aspect-ratio: 1; border: 1px solid #e0c38566; border-radius: 50%; background: radial-gradient(ellipse at 45% 40%, #c3935c, #795239 58%, #3e3025 63%, transparent 65%); box-shadow: 0 17px 40px #09080670; transform: rotate(-9deg); }
+.signature-card__image--2:before { width: 63%; border-radius: 44%; transform: rotate(8deg); background: radial-gradient(ellipse at 44% 38%, #c69d6c, #845c3c 58%, #433228 63%, transparent 66%); }
+.signature-card__image--3:before { width: 50%; transform: rotate(-3deg); background: radial-gradient(ellipse at 45% 40%, #dbb57c, #9d6c50 58%, #55402f 63%, transparent 66%); }
+.signature-card__image:after { content: ""; position: absolute; inset: 11px; border: 1px solid #ffffff20; pointer-events: none; }
+.signature-card__label { position: absolute; z-index: 1; top: 23px; left: 22px; color: #f0ddb9; font-size: 7px; letter-spacing: .17em; }
+.signature-card__index { position: absolute; z-index: 1; top: 21px; right: 22px; color: #f0ddb9; font: 13px var(--serif); }
+.signature-card__image-note { position: relative; z-index: 1; margin-top: 70%; color: #fff5e5b8; font-size: 7px; letter-spacing: .14em; text-transform: uppercase; }
+.signature-card__info { min-height: 114px; padding: 17px 19px 20px; }
+.signature-card__info > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.signature-card__info h3 { margin: 0; font: 500 19px/1.15 var(--serif); }
+.signature-card__info > div > span { flex: 0 0 auto; color: #896d3e; font: 16px var(--serif); }
+.signature-card__info p { margin: 8px 0 0; color: #726b60; font-size: 9px; line-height: 1.55; }
+.signature-hint { display: none; }
+.room-story { min-height: 610px; padding: 100px 10vw; display: grid; grid-template-columns: minmax(280px, .9fr) 1fr; gap: 9vw; align-items: center; overflow: hidden; background: #eee8dc; color: #28251f; }
+.room-story__art { min-height: 430px; position: relative; display: flex; align-items: end; padding: 30px; overflow: hidden; background: radial-gradient(ellipse at 50% 54%, #b9824d 0, #755336 19%, #302a20 48%, #191a16 84%); box-shadow: 0 20px 48px #2822182b; }
+.room-story__art:before { content: ""; position: absolute; inset: 12% 14% 0; border: 1px solid #dfc38280; border-bottom: 0; border-radius: 50% 50% 0 0 / 29% 29% 0 0; background: linear-gradient(90deg,#151611 0 8%,transparent 8% 92%,#151611 92%), linear-gradient(0deg,#171814 0 18%,transparent 18%); box-shadow: inset 0 0 90px #dfb66a24; }
+.room-story__arch { position: absolute; z-index: 1; bottom: 0; width: 29%; height: 39%; border: 1px solid #d8bc8166; border-bottom: 0; border-radius: 50% 50% 0 0 / 35% 35% 0 0; background: linear-gradient(180deg, #d8a86118, #171914); }
+.room-story__arch--back { left: 21%; }
+.room-story__arch--front { right: 18%; height: 49%; background: linear-gradient(180deg, #ddb77421, #131511); }
+.room-story__glow { position: absolute; top: 24%; left: 47%; width: 5px; height: 5px; border-radius: 50%; background: #f5ce82; box-shadow: 0 0 28px 13px #efbb5b82; }
+.room-story__art-caption { position: relative; z-index: 2; color: #f7edda; font: italic 29px/1.03 var(--serif); }
+.room-story__copy { max-width: 540px; }
+.room-story h2 { color: #26231e; }
+.room-story__copy > p { max-width: 440px; color: #6e675c; font-size: 13px; line-height: 1.9; }
+
 .visit-section { padding: 115px 11vw; display: grid; grid-template-columns: 1fr minmax(330px, 440px); gap: 8vw; align-items: center; background: #1e1d18; color: var(--paper); }
 .visit-copy h2 { color: #f6f0e4; }
 .visit-copy h2 em { color: var(--gold-light); }
@@ -200,6 +250,27 @@ button { color: inherit; }
   .dish-card__body { min-height: 104px; }
   .chapter-tab { padding: 9px 10px; font-size: 9px; }
   .menu-note { max-width: 340px; line-height: 1.5; }
+  .balkan-table { padding: 78px 7vw 82px; }
+  .balkan-table__heading { margin-bottom: 31px; text-align: left; }
+  .balkan-table__heading h2 { font-size: clamp(44px, 12vw, 62px); }
+  .balkan-table__heading > p { margin: 0; font-size: 12px; }
+  .balkan-table__chapters { display: flex; gap: 11px; overflow-x: auto; margin-right: -7vw; padding: 0 7vw 9px 0; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .balkan-table__chapters::-webkit-scrollbar, .signature-rail::-webkit-scrollbar { display: none; }
+  .table-chapter { flex: 0 0 78vw; min-height: 265px; padding: 22px; scroll-snap-align: start; }
+  .table-chapter__title { font-size: 27px; }
+  .signature-section { padding: 76px 0 65px; }
+  .signature-heading { margin: 0 7vw 26px; align-items: start; flex-direction: column; gap: 17px; }
+  .signature-heading h2 { font-size: 48px; }
+  .signature-all { margin: 0; }
+  .signature-rail { display: flex; gap: 12px; overflow-x: auto; padding: 0 7vw 13px; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .signature-card { flex: 0 0 78vw; scroll-snap-align: start; }
+  .signature-card__image { height: 270px; }
+  .signature-card__image-note { font-size: 6px; }
+  .signature-hint { display: flex; justify-content: center; gap: 12px; margin: 14px 0 0; color: #d6c49b; font-size: 8px; letter-spacing: .15em; text-transform: uppercase; }
+  .room-story { min-height: 0; padding: 72px 7vw 78px; grid-template-columns: 1fr; gap: 28px; }
+  .room-story__copy { order: 1; }
+  .room-story__art { order: 2; min-height: min(76vw, 350px); }
+  .room-story h2 { font-size: 50px; }
   .visit-section { padding: 76px 7vw; grid-template-columns: 1fr; gap: 34px; }
   .visit-copy h2 { font-size: 55px; }
   .visit-details { gap: 17px; }
