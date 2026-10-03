@@ -355,3 +355,131 @@ img { border-radius: 14px; }
   .signature-card__image,
   .table-chapter { border-radius: 16px; }
 }
+
+
+/* Warm, editorial restaurant palette and readable printed menu */
+:root {
+  --ink: #211d19;
+  --night: #171310;
+  --paper: #f3efe6;
+  --paper-deep: #e9e2d6;
+  --gold: #a43130;
+  --gold-light: #b94742;
+  --muted: #746d64;
+}
+body { background: #f3efe6 !important; color: #211d19; }
+.site-header,
+.site-header--scrolled { background: #171310eF !important; color: #f8f5ee !important; border-bottom-color: #ffffff1a !important; }
+.site-header--scrolled .wordmark__sub,
+.site-header--scrolled .nav-book,
+.site-header--scrolled .nav-book span { color: #f8f5ee; }
+.site-header .wordmark__sub,
+.site-nav .nav-book { color: #f8f5ee; }
+.story-section,
+.balkan-table,
+.room-story { background: #f3efe6 !important; color: #211d19 !important; }
+.story-section:before { width: 30%; background: linear-gradient(135deg, #e9e2d6, #f3efe6) !important; }
+.story-section h2,
+.room-story h2,
+.balkan-table__heading h2 { color: #211d19 !important; }
+.story-section__copy > p,
+.balkan-table__heading > p,
+.room-story__copy > p { color: #625b53 !important; }
+.story-section__image,
+.room-story__art { border-radius: 4px; box-shadow: none; }
+.menu-section { background: #e9e2d6 !important; color: #211d19 !important; }
+.menu-heading h2 { color: #211d19; }
+.menu-heading p { color: #625b53 !important; }
+.menu-section .eyebrow { color: #91312e; }
+.book-wrap { width: min(1120px, 92vw); }
+.menu-book { min-height: 540px; aspect-ratio: 1.65 / 1; filter: drop-shadow(0 20px 25px #35271c30); }
+.book-pages { background: #f8f5ee !important; color: #211d19 !important; border: 1px solid #d8cfc0 !important; border-radius: 3px; box-shadow: inset 0 0 0 8px #eee8dd, 0 8px 26px #35271c18; }
+.book-page,
+.book-page--right { padding: clamp(28px, 4vw, 55px) clamp(28px, 4.5vw, 62px); background: #f8f5ee !important; color: #211d19 !important; }
+.book-page--left { border-right: 1px solid #ddd2c2 !important; }
+.book-page h3 { margin: 14px 0 26px; color: #91312e; font-size: clamp(29px, 3vw, 40px); font-weight: 500; }
+.page-kicker { color: #91312e !important; font-size: 9px; letter-spacing: .16em; }
+.book-menu-list { display: grid; align-content: start; gap: clamp(15px, 1.8vw, 24px); }
+.book-menu-item { padding-bottom: 12px; border-bottom: 1px solid #ddd5c9; }
+.book-menu-item__top { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+.book-menu-item__top h4 { margin: 0; color: #211d19; font: 500 clamp(16px, 1.7vw, 21px)/1.2 "Clash Grotesk", sans-serif; }
+.book-menu-item__top span { flex: 0 0 auto; color: #91312e; font: 500 clamp(15px, 1.5vw, 19px)/1.2 "Clash Grotesk", sans-serif; }
+.book-menu-item p { margin: 5px 0 0; color: #6e675e; font: 400 clamp(12px, 1.2vw, 14px)/1.45 "Clash Grotesk", sans-serif; }
+.page-number { color: #8e8173 !important; }
+.book-spine { background: linear-gradient(90deg, #cfc4b4, #f7f2e8 44%, #cfc4b4); opacity: .7; }
+.book-cover { border-radius: 3px; background: radial-gradient(ellipse at 50% 40%, #8f302c, #451d1b 68%) !important; box-shadow: inset 0 0 0 12px #451d1b, inset 0 0 0 13px #bd7770; }
+.cover-title { color: #f5eee3; }
+.cover-small, .cover-bottom { color: #e1c5ac; }
+.cover-rule { background: #c9a989; }
+.cover-stamp { border-color: #d9b999; color: #f2e6d5; }
+.menu-controls { margin-top: 27px; }
+.chapter-tab { border-color: #b9aa98; color: #433b33; background: #f8f5ee; border-radius: 2px; padding: 12px 15px; font-size: 12px; }
+.chapter-tab span { color: #91312e; font-size: 9px; }
+.chapter-tab:hover,
+.chapter-tab.is-active { background: #91312e; border-color: #91312e; color: #fffaf3; }
+.chapter-tab.is-active span { color: #f0cfc8; }
+.menu-note { color: #625b53 !important; font-size: 11px; }
+.menu-note a { color: #91312e; text-decoration: underline; text-underline-offset: 3px; }
+.signature-section { background: #f3efe6 !important; color: #211d19 !important; }
+.signature-heading h2 { color: #211d19; }
+.signature-heading h2 em { color: #91312e; }
+.signature-card { background: #f8f5ee !important; color: #211d19 !important; border: 1px solid #e1d8cb; border-radius: 4px; box-shadow: none; }
+.signature-card__image { border-radius: 3px 3px 0 0; }
+.signature-card__info h3 { color: #211d19 !important; }
+.signature-card__info p { color: #625b53 !important; }
+.signature-all { color: #91312e; border-color: #91312e; }
+.visit-section { background: #e9e2d6 !important; color: #211d19 !important; }
+.visit-copy h2 { color: #211d19 !important; }
+.visit-copy > p,
+.visit-details p { color: #625b53 !important; }
+.visit-details span { color: #91312e; }
+.visit-details { border-top-color: #cfc4b4; }
+.booking-card { background: #f8f5ee !important; color: #211d19 !important; border: 1px solid #ddd3c5; border-radius: 4px; box-shadow: 0 14px 35px #35271c12; }
+.booking-card h3 { color: #211d19; }
+.booking-card label,
+.booking-hint { color: #625b53 !important; }
+.booking-card input,
+.booking-card select { background: #fffdfa !important; color: #211d19 !important; border: 1px solid #d4cabb !important; border-radius: 2px !important; }
+.gold-button { background: #91312e; color: #fffaf3; border-radius: 2px; }
+.gold-button:hover { background: #732522; }
+.booking-message { background: #efe2d9 !important; color: #433b33 !important; }
+.site-footer { background: #171310 !important; color: #eee6db !important; }
+.site-footer .wordmark__sub,
+.site-footer > a:last-child { color: #d1847b; }
+img { border-radius: 4px; }
+@media (max-width: 760px) {
+  .story-section,
+  .balkan-table,
+  .room-story,
+  .signature-section { background: #f3efe6 !important; }
+  .menu-section { padding: 68px 5vw 48px; }
+  .book-wrap { width: 100%; }
+  .menu-book { min-height: 0; aspect-ratio: auto; }
+  .book-pages { position: relative; grid-template-columns: 1fr; overflow: visible; }
+  .book-page,
+  .book-page--right { display: block; min-height: 0; padding: 27px 25px 36px; }
+  .book-page--left { border-right: 0 !important; border-bottom: 1px solid #ddd2c2 !important; }
+  .book-page h3 { margin: 10px 0 20px; font-size: 30px; }
+  .book-menu-list { gap: 14px; }
+  .book-menu-item { padding-bottom: 11px; }
+  .book-menu-item__top h4 { font-size: 17px; }
+  .book-menu-item__top span { font-size: 16px; }
+  .book-menu-item p { font-size: 12px; }
+  .book-spine { display: none; }
+  .book-cover { border-radius: 3px; }
+  .menu-controls { margin-top: 19px; }
+  .chapter-tab { padding: 10px 12px; }
+}
+
+.story-section__image { background: #6a5140; }
+.story-section__image:before {
+  inset: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: linear-gradient(0deg, #171310a8 0%, #17131020 48%, transparent 72%) !important;
+  box-shadow: none !important;
+}
+.story-section__image:after { display: none !important; }
+.room-story__art:before {
+  background: linear-gradient(0deg, #171310a0 0%, #17131016 55%, transparent 76%) !important;
+}
