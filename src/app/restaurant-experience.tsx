@@ -152,7 +152,7 @@ export default function RestaurantExperience() {
       // Image sequence instead of seeking a <video>: mobile browsers do not seek
       // reliably from scroll, but drawing a still frame always works.
       for (let i = 0; i < FRAME_COUNT; i++) {
-        const img = new Image();
+        const img = document.createElement("img");
         img.decoding = "async";
         img.onload = () => { if (i === 0 || i <= Math.round(frameState.frame)) drawFrame(Math.round(frameState.frame)); };
         img.src = `/frames/f${String(i + 1).padStart(3, "0")}.webp`;
@@ -408,7 +408,7 @@ export default function RestaurantExperience() {
       </section>
 
       <section className="story-section" id="story">
-        <div className="story-section__image"><Image src={encodeURI("/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (1).jpeg")} alt="A warmly set restaurant table with a shared Balkan meal" fill sizes="(max-width: 760px) 86vw, 40vw" /><span>Made for<br />the middle<br />of the table</span></div>
+        <div className="story-section__image"><Image src={encodeURI("/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (1).jpeg")} alt="A warmly set restaurant table with a shared Balkan meal" fill priority sizes="(max-width: 760px) 86vw, 40vw" /><span>Made for<br />the middle<br />of the table</span></div>
         <div className="story-section__copy">
           <span className="eyebrow eyebrow--dark">Our table, your table</span>
           <h2>From the Balkans,<br /><em>with warmth.</em></h2>
