@@ -46,6 +46,7 @@ export default function RestaurantExperience() {
   const cinemaRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const [category, setCategory] = useState<MenuCategory>("To Begin");
   const [bookingMessage, setBookingMessage] = useState("");
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -242,7 +243,16 @@ export default function RestaurantExperience() {
   };
 
   const dishes = menu[category];
-  const half = Math.ceil(dishes.length / 2);
+
+  useEffect(() => {
+    carouselRef.current?.scrollTo({ left: 0, behavior: "auto" });
+  }, [category]);
+
+  const moveCarousel = (direction: -1 | 1) => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    carousel.scrollBy({ left: direction * carousel.clientWidth * 0.78, behavior: "smooth" });
+  };
 
   return (
     <main>
@@ -297,7 +307,7 @@ export default function RestaurantExperience() {
         <div className="menu-heading">
           <span className="eyebrow">A little something for everyone</span>
           <h2 id="menu-title">The menu book</h2>
-          <p>Scroll to open it. Choose a chapter to browse the menu.</p>
+          <p>Open the book, then swipe through the dishes.</p>
         </div>
         <div className="book-wrap">
           <div className="menu-book" aria-label={`${category} menu`}>
@@ -306,17 +316,14 @@ export default function RestaurantExperience() {
               <div className="book-page book-page--left">
                 <span className="page-kicker">Balkan Foods · Manchester</span>
                 <h3>{category}</h3>
-                <div className="dish-list">
-                  {dishes.slice(0, half).map((dish) => <DishRow key={dish.name} dish={dish} />)}
-                </div>
+                <p className="book-prompt">Swipe the dish cards<br />to explore this chapter.</p>
+                <span className="book-page-mark" aria-hidden="true">0{categories.indexOf(category) + 1}</span>
                 <span className="page-number">{String(categories.indexOf(category) * 2 + 1).padStart(2, "0")}</span>
               </div>
               <div className="book-page book-page--right">
                 <span className="page-kicker">Cooked with care · Shared with love</span>
-                <div className="dish-list dish-list--right">
-                  {dishes.slice(half).map((dish) => <DishRow key={dish.name} dish={dish} />)}
-                </div>
-                <div className="page-bottom-note">Ask us about today’s specials<br />and our selection of Balkan wines.</div>
+                <p className="book-page-note">Albanian flavours,<br />made for sharing.</p>
+                <div className="page-bottom-note">Swipe to browse · Tap a chapter</div>
                 <span className="page-number">{String(categories.indexOf(category) * 2 + 2).padStart(2, "0")}</span>
               </div>
             </div>
@@ -341,7 +348,17 @@ export default function RestaurantExperience() {
               </button>
             ))}
           </div>
-          <p className="menu-note">Sample menu and prices for the website demo. Replace these with the restaurant’s confirmed menu.</p>
+          <div className="carousel-toolbar">
+            <p><span>{dishes.length.toString().padStart(2, "0")}</span> dishes · Swipe to browse</p>
+            <div className="carousel-arrows">
+              <button type="button" aria-label="Previous dishes" onClick={() => moveCarousel(-1)}>←</button>
+              <button type="button" aria-label="Next dishes" onClick={() => moveCarousel(1)}>→</button>
+            </div>
+          </div>
+          <div className="dish-carousel" ref={carouselRef} aria-label={`${category} dishes`} tabIndex={0}>
+            {dishes.map((dish, index) => <DishCard key={dish.name} dish={dish} index={index} />)}
+          </div>
+          <p className="menu-note">Demo menu and prices. Add each dish photo at <code>/public/images/menu/</code>.</p>
         </div>
       </section>
 
@@ -391,11 +408,20 @@ export default function RestaurantExperience() {
   );
 }
 
-function DishRow({ dish }: { dish: Dish }) {
+function DishCard({ dish, index }: { dish: Dish; index: number }) {
   return (
-    <article className="dish-row">
-      <div className="dish-row__heading"><h4>{dish.name}</h4><span>{dish.price}</span></div>
-      <p>{dish.detail}</p>
+    <article className="dish-card">
+      <div className="dish-card__photo" aria-label={`Photo placeholder for ${dish.name}`}>
+        <span className="photo-placeholder">
+          <span className="photo-placeholder__mark" aria-hidden="true">✳</span>
+          Food photograph
+        </span>
+        <span className="dish-card__number">{String(index + 1).padStart(2, "0")}</span>
+      </div>
+      <div className="dish-card__body">
+        <div className="dish-card__heading"><h3>{dish.name}</h3><span>{dish.price}</span></div>
+        <p>{dish.detail}</p>
+      </div>
     </article>
   );
 }
