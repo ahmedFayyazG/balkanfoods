@@ -364,6 +364,14 @@ export default function RestaurantExperience() {
             className="wordmark__logo"
             priority
           />
+          <Image
+            src="/images/ed-ballkan-food-red-sign.svg"
+            alt=""
+            width={44}
+            height={44}
+            className="wordmark__logo wordmark__logo--red"
+            priority
+          />
           <span className="wordmark__copy">
             <span className="wordmark__name">E.D Ballkan Food</span>
             <span className="wordmark__sub">Albanian restaurant · Sheffield</span>
