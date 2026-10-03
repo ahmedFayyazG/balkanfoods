@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import type { FormEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -94,7 +93,6 @@ export default function RestaurantExperience() {
   const dishScrollRef = useRef<HTMLElement>(null);
   const dishVideoRef = useRef<HTMLVideoElement>(null);
   const [category, setCategory] = useState<MenuCategory>("Red Wine");
-  const [bookingMessage, setBookingMessage] = useState("");
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
@@ -379,34 +377,25 @@ export default function RestaurantExperience() {
     };
   }, []);
 
-  const submitBooking = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    setBookingMessage(
-      `Thanks, ${String(form.get("name") || "there")} — your table request is ready. Connect a booking service to receive real reservations.`,
-    );
-    event.currentTarget.reset();
-  };
-
   const dishes = menu[category];
   const pageBreak = Math.ceil(dishes.length / 2);
 
   return (
     <main>
       <header className={`site-header${hasScrolled ? " site-header--scrolled" : ""}`}>
-        <a className="wordmark" href="#top" aria-label="Balkan Foods home">
-          <span className="wordmark__name">Balkan Foods</span>
-          <span className="wordmark__sub">A table worth travelling for</span>
+        <a className="wordmark" href="#top" aria-label="E.D Ballkan Food home">
+          <span className="wordmark__name">E.D Ballkan Food</span>
+          <span className="wordmark__sub">Albanian restaurant · Sheffield</span>
         </a>
         <nav className="site-nav" aria-label="Main navigation">
           <a href="#story">Our story</a>
           <a href="#menu">The menu</a>
           <a href="#visit">Find us</a>
-          <a className="nav-book" href="#book">Book a table <span>↗</span></a>
+          <a className="nav-book" href="tel:01146989760">Call us <span>↗</span></a>
         </nav>
       </header>
 
-      <section className="cinema" id="top" ref={cinemaRef} aria-label="Journey into Balkan Foods">
+      <section className="cinema" id="top" ref={cinemaRef} aria-label="Enter E.D Ballkan Food">
         <div className="cinema-stage">
         <video
           ref={videoRef}
@@ -422,11 +411,11 @@ export default function RestaurantExperience() {
         <div className="cinema__shade" />
         <div className="chapter chapter--arrival">
           <h1>Come in.<br /><em>Stay awhile.</em></h1>
-          <p>Good food, generous tables, and evenings that take their time.</p>
+          <p>Albanian cooking and a warm welcome on Abbeydale Road.</p>
         </div>
         <div className="chapter chapter--interior">
           <h2>Pull up a chair.</h2>
-          <p>Cooked slowly. Grilled over fire. Shared with everyone.</p>
+          <p>Take a seat at E.D Ballkan Food in Sheffield.</p>
         </div>
         <div className="chapter chapter--book">
           <h2>Take a look<br /><em>at the menu.</em></h2>
@@ -440,7 +429,7 @@ export default function RestaurantExperience() {
       <section className="menu-section" id="menu" aria-labelledby="menu-title">
         <div className="menu-heading">
           <h2 id="menu-title">The drinks menu</h2>
-          <p>Wines, spirits, Albanian favourites and something for every table.</p>
+          <p>Wine, beer, spirits and soft drinks. Browse the drinks list below.</p>
         </div>
         <div className="book-wrap">
           <div className="menu-book" aria-label={`${category} menu`}>
@@ -450,7 +439,7 @@ export default function RestaurantExperience() {
               <MenuBookPage items={dishes.slice(pageBreak)} category={category} page={categories.indexOf(category) * 2 + 2} side="right" />
             </div>
             <div className="book-cover" aria-hidden="true">
-              <span className="cover-small">BALKAN FOODS · MANCHESTER</span>
+              <span className="cover-small">E.D BALLKAN FOOD · SHEFFIELD</span>
               <span className="cover-rule" />
               <span className="cover-title">The<br /><em>Menu</em></span>
               <span className="cover-bottom">GOOD FOOD · GOOD COMPANY</span>
@@ -471,40 +460,36 @@ export default function RestaurantExperience() {
       <section className="story-section" id="story">
         <div className="story-section__image"><Image src={encodeURI("/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (1).jpeg")} alt="A warmly set restaurant table with a shared Balkan meal" fill priority sizes="(max-width: 760px) 86vw, 40vw" /><span>Made for<br />the middle<br />of the table</span></div>
         <div className="story-section__copy">
-          <h2>From the Balkans,<br /><em>with warmth.</em></h2>
-          <p>Inspired by the generous food and long evenings of the Balkans, our kitchen brings familiar flavours to the table. Tear the bread, pass the ajvar, order another round. There’s always room for one more.</p>
+          <h2>Albanian cooking,<br /><em>made to share.</em></h2>
+          <p>E.D Ballkan Food is an Albanian restaurant on Abbeydale Road. Come for familiar flavours, choose something from the menu, and make an evening of it around the table.</p>
           <a className="text-link" href="#menu">Open the menu <span>↓</span></a>
         </div>
       </section>
 
       <section className="balkan-table" aria-labelledby="balkan-table-title">
         <div className="balkan-table__heading">
-          <h2 id="balkan-table-title">Food made for<br /><em>passing around.</em></h2>
-          <p>Start with something small. Order another plate for the middle. Leave room for something sweet.</p>
+          <h2 id="balkan-table-title">A closer look<br /><em>at the table.</em></h2>
+          <p>Food and restaurant photographs from E.D Ballkan Food in Sheffield.</p>
         </div>
-        <div className="balkan-table__chapters">
-          <a className="table-chapter table-chapter--fire" href="#menu" style={{ backgroundImage: `linear-gradient(0deg, #11120fe8, #11120f22 80%), url("${encodeURI("/images/WhatsApp Image 2026-09-30 at 6.33.59 pm.jpeg")}")` }}>
-            <span className="table-chapter__number">01 / THE FIRE</span>
-            <span className="table-chapter__title">From the grill</span>
-            <span className="table-chapter__copy">Char, smoke, fresh lepinja.</span>
-            <span className="table-chapter__arrow" aria-hidden="true">↗</span>
-          </a>
-          <a className="table-chapter table-chapter--share" href="#menu" style={{ backgroundImage: `linear-gradient(0deg, #11120fe8, #11120f22 80%), url("${encodeURI("/images/WhatsApp Image 2026-09-30 at 12.34.14 pm (1).jpeg")}")` }}>
-            <span className="table-chapter__number">02 / THE TABLE</span>
-            <span className="table-chapter__title">Made to share</span>
-            <span className="table-chapter__copy">A little of everything, together.</span>
-            <span className="table-chapter__arrow" aria-hidden="true">↗</span>
-          </a>
-          <a className="table-chapter table-chapter--sweet" href="#menu" style={{ backgroundImage: `linear-gradient(0deg, #11120fe8, #11120f22 80%), url("${encodeURI("/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg")}")` }}>
-            <span className="table-chapter__number">03 / THE LAST BITE</span>
-            <span className="table-chapter__title">Something sweet</span>
-            <span className="table-chapter__copy">One more reason to stay.</span>
-            <span className="table-chapter__arrow" aria-hidden="true">↗</span>
-          </a>
+        <div className="balkan-table__chapters food-photo-grid">
+          {[
+            ["WhatsApp Image 2026-09-30 at 6.33.59 pm (2).jpeg", "A dish served at E.D Ballkan Food"],
+            ["WhatsApp Image 2026-09-30 at 6.34.00 pm (2).jpeg", "Food from the E.D Ballkan Food kitchen"],
+            ["WhatsApp Image 2026-09-30 at 6.53.49 pm.jpeg", "A close view of a restaurant dish"],
+            ["WhatsApp Image 2026-09-30 at 6.53.50 pm (2).jpeg", "A plate served at the restaurant"],
+            ["WhatsApp Image 2026-09-30 at 7.33.22 pm (1).jpeg", "Food served at E.D Ballkan Food"],
+            ["WhatsApp Image 2026-09-30 at 7.33.23 pm.jpeg", "A dish from the restaurant menu"],
+          ].map(([file, alt], index) => (
+            <figure className="food-photo" key={file}>
+              <Image src={encodeURI(`/images/${file}`)} alt={alt} fill sizes="(max-width: 760px) 72vw, 31vw" />
+              <figcaption>0{index + 1}</figcaption>
+            </figure>
+          ))}
         </div>
+
       </section>
 
-      <section className="dish-scroll" ref={dishScrollRef} aria-label="Balkan Foods dishes">
+      <section className="dish-scroll" ref={dishScrollRef} aria-label="Food at E.D Ballkan Food">
         <div className="dish-scroll__stage">
           <video
             ref={dishVideoRef}
@@ -518,58 +503,50 @@ export default function RestaurantExperience() {
           <div className="dish-scroll__shade" aria-hidden="true" />
           <div className="dish-scroll__copy">
             <article className="dish-scroll__cue">
-              <h2>A table made<br />for sharing.</h2>
-              <p>Generous plates, familiar flavours, and room for everyone.</p>
+              <h2>The Albanian<br />table.</h2>
+              <p>A look at the food and the place on Abbeydale Road.</p>
             </article>
             <article className="dish-scroll__cue">
-              <h2>Smoky, warm,<br />made to order.</h2>
-              <p>Fire-grilled favourites, served fresh to the table.</p>
+              <h2>A closer look<br />at the table.</h2>
+              <p>See the dishes and restaurant through our photographs.</p>
             </article>
             <article className="dish-scroll__cue">
-              <h2>Pass a plate.<br />Stay a while.</h2>
-              <p>A little of everything tastes better together.</p>
+              <h2>Good food.<br />Good company.</h2>
+              <p>Find us on Abbeydale Road, Sheffield.</p>
             </article>
             <article className="dish-scroll__cue">
-              <h2>Save room<br />for one more.</h2>
-              <p>Make an evening of it, from first plate to last bite.</p>
+              <h2>Visit us<br />in Sheffield.</h2>
+              <p>Call us for enquiries and current opening times.</p>
             </article>
             <article className="dish-scroll__cue dish-scroll__cue--cta">
-              <h2>Explore<br />the menu.</h2>
-              <a href="#menu">Open the drinks menu <span aria-hidden="true">↗</span></a>
+              <h2>Browse<br />the drinks list.</h2>
+              <a href="#menu">See the drinks menu <span aria-hidden="true">↗</span></a>
             </article>
           </div>
           <div className="dish-scroll__progress" aria-hidden="true"><span className="dish-scroll__progress-bar" /></div>
-          <span className="dish-scroll__hint">Scroll to savour the menu</span>
+          <span className="dish-scroll__hint">Scroll through the food</span>
         </div>
       </section>
 
       <section className="signature-section" aria-labelledby="signature-title">
         <div className="signature-heading">
           <div>
-            <h2 id="signature-title">The ones you<br /><em>come back for.</em></h2>
+            <h2 id="signature-title">From our<br /><em>restaurant.</em></h2>
           </div>
-          <a className="signature-all" href="#menu">Explore the menu <span aria-hidden="true">↗</span></a>
+          <a className="signature-all" href="#menu">View the drinks list <span aria-hidden="true">↗</span></a>
         </div>
-        <div className="signature-rail" aria-label="Featured Balkan dishes">
+        <div className="signature-rail restaurant-photo-rail" aria-label="More restaurant photographs">
           {[
-            { name: "Ćevapi", detail: "Grilled beef and lamb, flatbread, kajmak, onion", price: "£19", tag: "STRAIGHT FROM THE GRILL", image: "/images/WhatsApp Image 2026-09-30 at 6.53.50 pm.jpeg", alt: "Grilled ćevapi served on a plate" },
-            { name: "Mixed grill for two", detail: "Ćevapi, chicken, sausage, flatbread, sides", price: "£46", tag: "MADE FOR THE MIDDLE", image: "/images/WhatsApp Image 2026-09-30 at 12.34.14 pm.jpeg", alt: "A generous Balkan mixed grill platter" },
-            { name: "Warm palačinke", detail: "Thin pancakes, chocolate, toasted hazelnut", price: "£9", tag: "SAVE ROOM FOR SWEET", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg", alt: "A plated dessert from the restaurant" },
-          ].map((dish, index) => (
-            <article className="signature-card" key={dish.name}>
-              <div className={`signature-card__image signature-card__image--${index + 1}`}>
-                <Image className="signature-card__photo" src={encodeURI(dish.image)} alt={dish.alt} fill sizes="(max-width: 760px) 78vw, 33vw" />
-                <span className="signature-card__label">{dish.tag}</span>
-                <span className="signature-card__index">0{index + 1}</span>
-              </div>
-              <div className="signature-card__info">
-                <div><h3>{dish.name}</h3><span>{dish.price}</span></div>
-                <p>{dish.detail}</p>
-              </div>
-            </article>
+            ["WhatsApp Image 2026-09-30 at 6.53.50 pm (1).jpeg", "A dish from E.D Ballkan Food"],
+            ["WhatsApp Image 2026-09-30 at 6.53.54 pm.jpeg", "Food served at E.D Ballkan Food"],
+            ["WhatsApp Image 2026-09-30 at 7.33.26 pm.jpeg", "A plate from the restaurant"],
+          ].map(([file, alt], index) => (
+            <figure className="restaurant-photo-card" key={file}>
+              <div className="restaurant-photo-card__image"><Image src={encodeURI(`/images/${file}`)} alt={alt} fill sizes="(max-width: 760px) 80vw, 33vw" /></div>
+              <figcaption>Sheffield · Abbeydale Road <span>0{index + 1}</span></figcaption>
+            </figure>
           ))}
         </div>
-        <p className="signature-hint"><span aria-hidden="true">←</span> Swipe to discover <span aria-hidden="true">→</span></p>
       </section>
 
       <section className="room-story" aria-labelledby="room-story-title">
@@ -578,41 +555,40 @@ export default function RestaurantExperience() {
           <span className="room-story__art-caption">A long evening<br />starts here.</span>
         </div>
         <div className="room-story__copy">
-          <h2 id="room-story-title">A room for<br /><em>one more story.</em></h2>
-          <p>Good food brings everyone in. The long conversations are what keep the evening going. Pull up a chair, pass a plate, and make yourself at home.</p>
-          <a className="text-link" href="#book">Save your seat <span>↗</span></a>
+          <h2 id="room-story-title">A place to<br /><em>sit and eat.</em></h2>
+          <p>Find E.D Ballkan Food at 233 Abbeydale Road. Call ahead for current opening times or to ask about your visit.</p>
+          <a className="text-link" href="tel:01146989760">Call 0114 698 9760 <span>↗</span></a>
         </div>
       </section>
 
       <section className="visit-section" id="visit">
         <div className="visit-copy">
-          <h2>A seat at<br /><em>our table.</em></h2>
-          <p>Come hungry. Leave happy. We’ll keep a place for you.</p>
+          <h2>Find us on<br /><em>Abbeydale Road.</em></h2>
+          <p>E.D Ballkan Food · Albanian restaurant in Sheffield</p>
           <div className="visit-details">
-            <div><span>Find us</span><p>Manchester, United Kingdom<br />Exact address to be added</p></div>
-            <div><span>Opening hours</span><p>Tuesday–Sunday<br />12:00–22:00 · Monday closed</p></div>
-            <div><span>Call us</span><p>Phone number to be added</p></div>
-            <div><span>Good to know</span><p>Walk-ins welcome · Dietary needs catered for</p></div>
+            <div><span>Address</span><p>233 Abbeydale Road<br />Sheffield, S7 1FJ</p></div>
+            <div><span>Telephone</span><p><a href="tel:01146989760">0114 698 9760</a></p></div>
+            <div><span>Opening times</span><p>Call the restaurant for current hours.</p></div>
+            <div><span>Follow along</span><p><a href="https://www.instagram.com/e.d_ballkan_food/" target="_blank" rel="noreferrer">Instagram ↗</a></p></div>
           </div>
         </div>
-        <form className="booking-card" id="book" onSubmit={submitBooking}>
-          <h3>Book a table</h3>
-          <label>Your name<input name="name" autoComplete="name" placeholder="Name" required /></label>
-          <div className="form-row">
-            <label>Date<input name="date" type="date" required /></label>
-            <label>Time<select name="time" defaultValue="19:00"><option>17:30</option><option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option></select></label>
-          </div>
-          <label>Guests<select name="guests" defaultValue="2"><option value="1">1 guest</option><option value="2">2 guests</option><option value="3">3 guests</option><option value="4">4 guests</option><option value="5">5 guests</option><option value="6+">6+ guests</option></select></label>
-          <button className="gold-button" type="submit">Request a table <span>↗</span></button>
-          <p className="booking-hint">Demo form — connect your reservation provider to accept bookings.</p>
-          {bookingMessage && <p className="booking-message" role="status">{bookingMessage}</p>}
-        </form>
+        <div className="visit-actions">
+          <a className="gold-button" href="https://www.google.com/maps/search/?api=1&query=E.D+Ballkan+Food%2C+233+Abbeydale+Road%2C+Sheffield%2C+S7+1FJ" target="_blank" rel="noreferrer">Get directions <span>↗</span></a>
+          <a className="visit-call" href="tel:01146989760">Call 0114 698 9760</a>
+        </div>
       </section>
-
       <footer className="site-footer">
-        <a className="wordmark" href="#top"><span className="wordmark__name">Balkan Foods</span><span className="wordmark__sub">A table worth travelling for</span></a>
-        <span>Manchester · Balkan cooking · Good company</span>
-        <a href="#top">Back to the entrance ↑</a>
+        <div className="footer-main">
+          <a className="wordmark" href="#top" aria-label="E.D Ballkan Food home"><span className="wordmark__name">E.D Ballkan Food</span><span className="wordmark__sub">Albanian restaurant · Sheffield</span></a>
+          <p className="footer-line">A table in Sheffield.<br />233 Abbeydale Road, S7 1FJ</p>
+          <div className="footer-links">
+            <a href="#menu">Drinks menu</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=E.D+Ballkan+Food%2C+233+Abbeydale+Road%2C+Sheffield%2C+S7+1FJ" target="_blank" rel="noreferrer">Directions ↗</a>
+            <a href="https://www.instagram.com/e.d_ballkan_food/" target="_blank" rel="noreferrer">Instagram ↗</a>
+            <a href="tel:01146989760">Call the restaurant ↗</a>
+          </div>
+        </div>
+        <div className="footer-bottom"><span>© E.D Ballkan Food</span><a href="#top">Back to top ↑</a></div>
       </footer>
     </main>
   );
