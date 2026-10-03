@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Balkan Foods | A Table Worth Travelling For",
+  title: "E.D Ballkan Food | Albanian Restaurant in Sheffield",
   description:
-    "Discover Balkan-inspired cooking, a welcoming table and warm hospitality at Balkan Foods. Explore the menu and request a table.",
+    "Visit E.D Ballkan Food, an Albanian restaurant at 233 Abbeydale Road, Sheffield S7 1FJ. Call 0114 698 9760 for current opening times and enquiries.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
