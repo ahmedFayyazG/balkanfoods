@@ -113,7 +113,15 @@ button { color: inherit; }
 .carousel-arrows button:hover { background: var(--gold-light); color: #211f1a; }
 .dish-carousel { width: min(980px, 88vw); display: flex; gap: 14px; overflow-x: auto; padding: 0 0 12px; scroll-snap-type: x mandatory; scroll-padding-inline: 2px; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
 .dish-carousel::-webkit-scrollbar { display: none; }
-.dish-card { flex: 0 0 285px; overflow: hidden; scroll-snap-align: start; background: #f5f0e3; color: #2e2a22; box-shadow: 0 14px 30px #08080655; }
+.dish-card { flex: 0 0 285px; display: flex; flex-direction: column; overflow: hidden; scroll-snap-align: start; background: #f5f0e3; color: #2e2a22; box-shadow: 0 14px 30px #08080655; }
+.drink-card__top { height: 126px; flex: 0 0 126px; position: relative; display: flex; align-items: end; padding: 18px; overflow: hidden; color: #f3e7d0; background: radial-gradient(circle at 78% 18%, #ad6042 0, transparent 24%), radial-gradient(ellipse at 50% 140%, #b99861 0, transparent 46%), linear-gradient(145deg, #302d25, #171814 72%); }
+.drink-card__top:before { content: ""; position: absolute; top: 31px; right: 25px; width: 54px; height: 54px; border: 1px solid #e1c99588; border-radius: 50%; box-shadow: 0 0 0 8px #e1c99514, 0 0 0 16px #e1c9950b; }
+.drink-card__category { position: relative; z-index: 1; font-size: 8px; letter-spacing: .15em; text-transform: uppercase; }
+.drink-card__seal { position: absolute; top: 41px; right: 42px; color: #e1c995; font: 12px var(--sans); letter-spacing: .12em; }
+.drink-card .dish-card__number { color: #f6eedc; }
+.drink-card .dish-card__body { flex: 1; }
+.drink-card .dish-card__heading { align-items: flex-start; flex-direction: column; gap: 8px; }
+.drink-card .dish-card__heading > span { color: #876b3a; font: 400 12px/1.45 var(--sans); }
 .dish-card__photo { isolation: isolate; height: 190px; position: relative; display: grid; place-items: center; overflow: hidden; background: radial-gradient(ellipse at 51% 50%, #99764b 0, #493c2b 36%, #29271f 72%); }
 .dish-card__photo > img { z-index: -1; object-fit: cover; }
 .dish-card__photo:before { z-index: 0; content: ""; position: absolute; inset: 12px; border: 1px solid #d0b87855; }
