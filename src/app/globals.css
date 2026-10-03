@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #080808;
+  --ink: #ffffff;
   --night: #080808;
-  --paper: #ffffff;
-  --paper-deep: #f4f4f4;
+  --paper: #080808;
+  --paper-deep: #111111;
   --gold: #c8102e;
   --gold-light: #e31837;
   --muted: #777777;
@@ -12,7 +12,7 @@
   --sans: "Clash Grotesk", sans-serif;
 }
 
-* { box-sizing: border-box; font-family: "Clash Grotesk", sans-serif !important; font-style: normal !important; font-weight: 700 !important; }
+* { box-sizing: border-box; font-family: "Clash Grotesk", sans-serif !important; font-style: normal !important; font-weight: 500 !important; }
 html { background: var(--night); }
 @media (min-width: 761px) { html { scroll-behavior: smooth; } }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
@@ -291,4 +291,67 @@ button { color: inherit; }
   .visit-details { gap: 17px; }
   .booking-card { padding: 27px 22px; }
   .site-footer { align-items: flex-start; flex-direction: column; padding: 25px 7vw; }
+}
+
+
+/* Unified dark surfaces, softer typography, and rounded photography */
+body { background: #080808 !important; color: #ffffff; }
+.site-header,
+.site-header--scrolled { background: #080808f2 !important; color: #ffffff !important; border-bottom-color: #ffffff22 !important; backdrop-filter: blur(14px); }
+.site-header--scrolled .wordmark__sub,
+.site-header--scrolled .nav-book,
+.site-header--scrolled .nav-book span { color: #ffffff; }
+.story-section,
+.balkan-table,
+.room-story { background: #080808 !important; color: #ffffff !important; }
+.story-section:before { background: linear-gradient(135deg, #171717, #080808) !important; }
+.story-section h2,
+.room-story h2,
+.balkan-table__heading h2 { color: #ffffff !important; }
+.story-section__copy > p,
+.balkan-table__heading > p,
+.room-story__copy > p { color: #d0d0d0 !important; }
+.story-section__image,
+.room-story__art { border-radius: 22px; }
+.menu-section { background: radial-gradient(ellipse at 50% 55%, #380611 0, #171717 45%, #080808 100%) !important; }
+.book-pages,
+.book-page,
+.book-page--right { background: #111111 !important; color: #ffffff !important; }
+.book-pages { border: 1px solid #c8102e; }
+.book-page--left { border-right-color: #c8102e !important; }
+.book-prompt,
+.dish-row p { color: #d0d0d0 !important; }
+.visit-section { background: #080808 !important; }
+.booking-card { background: #111111 !important; color: #ffffff !important; border: 1px solid #c8102e; border-radius: 18px; }
+.booking-card label,
+.booking-hint,
+.booking-message { color: #d0d0d0 !important; }
+.booking-card input,
+.booking-card select { background: #080808 !important; color: #ffffff !important; border-color: #555555 !important; border-radius: 9px !important; }
+.booking-message { background: #1b090d !important; border-left-color: #e31837 !important; }
+.dish-card,
+.signature-card { background: #111111 !important; color: #ffffff !important; border: 1px solid #ffffff1c; border-radius: 18px; }
+.dish-card__heading h3,
+.signature-card__info h3 { color: #ffffff; }
+.dish-card__body p,
+.signature-card__info p { color: #c8c8c8 !important; }
+.dish-card__photo,
+.signature-card__image,
+.table-chapter { border-radius: 18px; }
+.dish-card__photo > img,
+.signature-card__photo,
+.story-section__image > img,
+.room-story__art > img { border-radius: inherit; }
+.site-footer { background: #080808 !important; }
+img { border-radius: 14px; }
+@media (max-width: 760px) {
+  .site-header,
+  .site-header--scrolled { background: #080808f5 !important; }
+  .story-section__image,
+  .room-story__art { border-radius: 18px; }
+  .dish-card,
+  .signature-card,
+  .dish-card__photo,
+  .signature-card__image,
+  .table-chapter { border-radius: 16px; }
 }
