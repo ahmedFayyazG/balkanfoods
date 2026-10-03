@@ -372,6 +372,79 @@ export default function RestaurantExperience() {
         </div>
       </section>
 
+      <section className="balkan-table" aria-labelledby="balkan-table-title">
+        <div className="balkan-table__heading">
+          <span className="eyebrow eyebrow--dark">The Balkan table</span>
+          <h2 id="balkan-table-title">Food made for<br /><em>passing around.</em></h2>
+          <p>Start with something small. Order another plate for the middle. Leave room for something sweet.</p>
+        </div>
+        <div className="balkan-table__chapters">
+          <a className="table-chapter table-chapter--fire" href="#menu">
+            <span className="table-chapter__number">01 / THE FIRE</span>
+            <span className="table-chapter__title">From the grill</span>
+            <span className="table-chapter__copy">Char, smoke, fresh lepinja.</span>
+            <span className="table-chapter__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a className="table-chapter table-chapter--share" href="#menu">
+            <span className="table-chapter__number">02 / THE TABLE</span>
+            <span className="table-chapter__title">Made to share</span>
+            <span className="table-chapter__copy">A little of everything, together.</span>
+            <span className="table-chapter__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a className="table-chapter table-chapter--sweet" href="#menu">
+            <span className="table-chapter__number">03 / THE LAST BITE</span>
+            <span className="table-chapter__title">Something sweet</span>
+            <span className="table-chapter__copy">One more reason to stay.</span>
+            <span className="table-chapter__arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section className="signature-section" aria-labelledby="signature-title">
+        <div className="signature-heading">
+          <div>
+            <span className="eyebrow">From our kitchen</span>
+            <h2 id="signature-title">The ones you<br /><em>come back for.</em></h2>
+          </div>
+          <a className="signature-all" href="#menu">Explore the menu <span aria-hidden="true">↗</span></a>
+        </div>
+        <div className="signature-rail" aria-label="Featured Balkan dishes">
+          {[
+            { name: "Ćevapi", detail: "Grilled beef and lamb, flatbread, kajmak, onion", price: "£19", tag: "STRAIGHT FROM THE GRILL" },
+            { name: "Mixed grill for two", detail: "Ćevapi, chicken, sausage, flatbread, sides", price: "£46", tag: "MADE FOR THE MIDDLE" },
+            { name: "Warm palačinke", detail: "Thin pancakes, chocolate, toasted hazelnut", price: "£9", tag: "SAVE ROOM FOR SWEET" },
+          ].map((dish, index) => (
+            <article className="signature-card" key={dish.name}>
+              <div className={`signature-card__image signature-card__image--${index + 1}`}>
+                <span className="signature-card__label">{dish.tag}</span>
+                <span className="signature-card__index">0{index + 1}</span>
+                <span className="signature-card__image-note">Your dish photography goes here</span>
+              </div>
+              <div className="signature-card__info">
+                <div><h3>{dish.name}</h3><span>{dish.price}</span></div>
+                <p>{dish.detail}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p className="signature-hint"><span aria-hidden="true">←</span> Swipe to discover <span aria-hidden="true">→</span></p>
+      </section>
+
+      <section className="room-story" aria-labelledby="room-story-title">
+        <div className="room-story__art" aria-hidden="true">
+          <span className="room-story__arch room-story__arch--back" />
+          <span className="room-story__arch room-story__arch--front" />
+          <span className="room-story__glow" />
+          <span className="room-story__art-caption">A long evening<br />starts here.</span>
+        </div>
+        <div className="room-story__copy">
+          <span className="eyebrow eyebrow--dark">Stay a little longer</span>
+          <h2 id="room-story-title">A room for<br /><em>one more story.</em></h2>
+          <p>Good food brings everyone in. The long conversations are what keep the evening going. Pull up a chair, pass a plate, and make yourself at home.</p>
+          <a className="text-link" href="#book">Save your seat <span>↗</span></a>
+        </div>
+      </section>
+
       <section className="visit-section" id="visit">
         <div className="visit-copy">
           <span className="eyebrow">Make an evening of it</span>
