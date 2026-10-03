@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import gsap from "gsap";
@@ -11,32 +12,32 @@ gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 type MenuCategory = "To Begin" | "From the Grill" | "Balkan Classics" | "Sweet Things";
-type Dish = { name: string; detail: string; price: string };
+type Dish = { name: string; detail: string; price: string; image: string; alt: string };
 
 const menu: Record<MenuCategory, Dish[]> = {
   "To Begin": [
-    { name: "Warm lepinja", detail: "House bread, ajvar, whipped kajmak", price: "£6" },
-    { name: "Shopska salad", detail: "Tomato, cucumber, peppers, grated sirene", price: "£9" },
-    { name: "Balkan mezze", detail: "Ajvar, olives, sirene, pickled vegetables", price: "£13" },
-    { name: "Crispy filo parcels", detail: "Spinach, herbs, yoghurt dip", price: "£10" },
+    { name: "Warm lepinja", detail: "House bread, ajvar, whipped kajmak", price: "£6", image: "/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (2).jpeg", alt: "A Balkan sharing spread with bread and sides" },
+    { name: "Shopska salad", detail: "Tomato, cucumber, peppers, grated sirene", price: "£9", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (3).jpeg", alt: "Fresh Balkan salads and soup" },
+    { name: "Balkan mezze", detail: "Ajvar, olives, sirene, pickled vegetables", price: "£13", image: "/images/WhatsApp Image 2026-09-30 at 12.34.14 pm (1).jpeg", alt: "A Balkan mezze board with cheese, olives and pastries" },
+    { name: "Crispy filo parcels", detail: "Spinach, herbs, yoghurt dip", price: "£10", image: "/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (2).jpeg", alt: "A table spread with Balkan pastries and shared plates" },
   ],
   "From the Grill": [
-    { name: "Ćevapi", detail: "Grilled beef and lamb, flatbread, kajmak, onion", price: "£19" },
-    { name: "Pljeskavica", detail: "Balkan-style grilled patty, ajvar, fries", price: "£21" },
-    { name: "Mixed grill for two", detail: "Ćevapi, chicken, sausage, flatbread, sides", price: "£46" },
-    { name: "Grilled chicken skewers", detail: "Marinated chicken, lemon, herb salad", price: "£18" },
+    { name: "Ćevapi", detail: "Grilled beef and lamb, flatbread, kajmak, onion", price: "£19", image: "/images/WhatsApp Image 2026-09-30 at 6.53.50 pm.jpeg", alt: "Grilled ćevapi served on a plate" },
+    { name: "Pljeskavica", detail: "Balkan-style grilled patty, ajvar, fries", price: "£21", image: "/images/WhatsApp Image 2026-09-30 at 12.34.15 pm.jpeg", alt: "Grilled Balkan meat and steak platter" },
+    { name: "Mixed grill for two", detail: "Ćevapi, chicken, sausage, flatbread, sides", price: "£46", image: "/images/WhatsApp Image 2026-09-30 at 12.34.14 pm.jpeg", alt: "A generous mixed grill platter" },
+    { name: "Grilled chicken skewers", detail: "Marinated chicken, lemon, herb salad", price: "£18", image: "/images/WhatsApp Image 2026-09-30 at 6.53.54 pm (1).jpeg", alt: "Roast chicken with sides from the kitchen" },
   ],
   "Balkan Classics": [
-    { name: "Sarma", detail: "Slow-cooked cabbage rolls, rice, smoked paprika", price: "£18" },
-    { name: "Burek", detail: "Flaky pastry, spiced beef, cultured yoghurt", price: "£16" },
-    { name: "Stuffed peppers", detail: "Rice, herbs, tomato, seasonal greens", price: "£17" },
-    { name: "Slow-braised lamb", detail: "Root vegetables, rosemary, pan juices", price: "£25" },
+    { name: "Sarma", detail: "Slow-cooked cabbage rolls, rice, smoked paprika", price: "£18", image: "/images/WhatsApp Image 2026-09-30 at 6.53.49 pm.jpeg", alt: "A slow-cooked Balkan dish from the kitchen" },
+    { name: "Burek", detail: "Flaky pastry, spiced beef, cultured yoghurt", price: "£16", image: "/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (2).jpeg", alt: "A Balkan sharing board with pastries and sides" },
+    { name: "Stuffed peppers", detail: "Rice, herbs, tomato, seasonal greens", price: "£17", image: "/images/WhatsApp Image 2026-09-30 at 6.53.50 pm (1).jpeg", alt: "A baked Balkan dish from the oven" },
+    { name: "Slow-braised lamb", detail: "Root vegetables, rosemary, pan juices", price: "£25", image: "/images/WhatsApp Image 2026-09-30 at 6.53.49 pm.jpeg", alt: "Slow-cooked meat prepared in the kitchen" },
   ],
   "Sweet Things": [
-    { name: "Baklava", detail: "Walnut, honey, orange blossom", price: "£8" },
-    { name: "Tufahija", detail: "Poached apple, walnut, vanilla cream", price: "£8" },
-    { name: "Warm palačinke", detail: "Thin pancakes, chocolate, toasted hazelnut", price: "£9" },
-    { name: "Seasonal sorbet", detail: "Three scoops, changing with the season", price: "£7" },
+    { name: "Baklava", detail: "Walnut, honey, orange blossom", price: "£8", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg", alt: "A plated Balkan dessert" },
+    { name: "Tufahija", detail: "Poached apple, walnut, vanilla cream", price: "£8", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg", alt: "A plated Balkan dessert" },
+    { name: "Warm palačinke", detail: "Thin pancakes, chocolate, toasted hazelnut", price: "£9", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg", alt: "A plated Balkan dessert" },
+    { name: "Seasonal sorbet", detail: "Three scoops, changing with the season", price: "£7", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg", alt: "A plated dessert" },
   ],
 };
 
@@ -358,12 +359,12 @@ export default function RestaurantExperience() {
           <div className="dish-carousel" ref={carouselRef} aria-label={`${category} dishes`} tabIndex={0}>
             {dishes.map((dish, index) => <DishCard key={dish.name} dish={dish} index={index} />)}
           </div>
-          <p className="menu-note">Demo menu and prices. Add each dish photo at <code>/public/images/menu/</code>.</p>
+          <p className="menu-note">Swipe through the menu chapters to explore our dishes.</p>
         </div>
       </section>
 
       <section className="story-section" id="story">
-        <div className="story-section__image" aria-hidden="true"><span>Made for<br />the middle<br />of the table</span></div>
+        <div className="story-section__image"><Image src={encodeURI("/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (1).jpeg")} alt="A warmly set restaurant table with a shared Balkan meal" fill sizes="(max-width: 760px) 86vw, 40vw" /><span>Made for<br />the middle<br />of the table</span></div>
         <div className="story-section__copy">
           <span className="eyebrow eyebrow--dark">Our table, your table</span>
           <h2>From the Balkans,<br /><em>with warmth.</em></h2>
@@ -379,19 +380,19 @@ export default function RestaurantExperience() {
           <p>Start with something small. Order another plate for the middle. Leave room for something sweet.</p>
         </div>
         <div className="balkan-table__chapters">
-          <a className="table-chapter table-chapter--fire" href="#menu">
+          <a className="table-chapter table-chapter--fire" href="#menu" style={{ backgroundImage: `linear-gradient(0deg, #11120fe8, #11120f22 80%), url("${encodeURI("/images/WhatsApp Image 2026-09-30 at 6.33.59 pm.jpeg")}")` }}>
             <span className="table-chapter__number">01 / THE FIRE</span>
             <span className="table-chapter__title">From the grill</span>
             <span className="table-chapter__copy">Char, smoke, fresh lepinja.</span>
             <span className="table-chapter__arrow" aria-hidden="true">↗</span>
           </a>
-          <a className="table-chapter table-chapter--share" href="#menu">
+          <a className="table-chapter table-chapter--share" href="#menu" style={{ backgroundImage: `linear-gradient(0deg, #11120fe8, #11120f22 80%), url("${encodeURI("/images/WhatsApp Image 2026-09-30 at 12.34.14 pm (1).jpeg")}")` }}>
             <span className="table-chapter__number">02 / THE TABLE</span>
             <span className="table-chapter__title">Made to share</span>
             <span className="table-chapter__copy">A little of everything, together.</span>
             <span className="table-chapter__arrow" aria-hidden="true">↗</span>
           </a>
-          <a className="table-chapter table-chapter--sweet" href="#menu">
+          <a className="table-chapter table-chapter--sweet" href="#menu" style={{ backgroundImage: `linear-gradient(0deg, #11120fe8, #11120f22 80%), url("${encodeURI("/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg")}")` }}>
             <span className="table-chapter__number">03 / THE LAST BITE</span>
             <span className="table-chapter__title">Something sweet</span>
             <span className="table-chapter__copy">One more reason to stay.</span>
@@ -410,15 +411,15 @@ export default function RestaurantExperience() {
         </div>
         <div className="signature-rail" aria-label="Featured Balkan dishes">
           {[
-            { name: "Ćevapi", detail: "Grilled beef and lamb, flatbread, kajmak, onion", price: "£19", tag: "STRAIGHT FROM THE GRILL" },
-            { name: "Mixed grill for two", detail: "Ćevapi, chicken, sausage, flatbread, sides", price: "£46", tag: "MADE FOR THE MIDDLE" },
-            { name: "Warm palačinke", detail: "Thin pancakes, chocolate, toasted hazelnut", price: "£9", tag: "SAVE ROOM FOR SWEET" },
+            { name: "Ćevapi", detail: "Grilled beef and lamb, flatbread, kajmak, onion", price: "£19", tag: "STRAIGHT FROM THE GRILL", image: "/images/WhatsApp Image 2026-09-30 at 6.53.50 pm.jpeg", alt: "Grilled ćevapi served on a plate" },
+            { name: "Mixed grill for two", detail: "Ćevapi, chicken, sausage, flatbread, sides", price: "£46", tag: "MADE FOR THE MIDDLE", image: "/images/WhatsApp Image 2026-09-30 at 12.34.14 pm.jpeg", alt: "A generous Balkan mixed grill platter" },
+            { name: "Warm palačinke", detail: "Thin pancakes, chocolate, toasted hazelnut", price: "£9", tag: "SAVE ROOM FOR SWEET", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg", alt: "A plated dessert from the restaurant" },
           ].map((dish, index) => (
             <article className="signature-card" key={dish.name}>
               <div className={`signature-card__image signature-card__image--${index + 1}`}>
+                <Image className="signature-card__photo" src={encodeURI(dish.image)} alt={dish.alt} fill sizes="(max-width: 760px) 78vw, 33vw" />
                 <span className="signature-card__label">{dish.tag}</span>
                 <span className="signature-card__index">0{index + 1}</span>
-                <span className="signature-card__image-note">Your dish photography goes here</span>
               </div>
               <div className="signature-card__info">
                 <div><h3>{dish.name}</h3><span>{dish.price}</span></div>
@@ -431,10 +432,8 @@ export default function RestaurantExperience() {
       </section>
 
       <section className="room-story" aria-labelledby="room-story-title">
-        <div className="room-story__art" aria-hidden="true">
-          <span className="room-story__arch room-story__arch--back" />
-          <span className="room-story__arch room-story__arch--front" />
-          <span className="room-story__glow" />
+        <div className="room-story__art">
+          <Image src={encodeURI("/images/WhatsApp Image 2026-09-30 at 12.34.17 pm.jpeg")} alt="The restaurant dining room and bar, ready for an evening service" fill sizes="(max-width: 760px) 86vw, 40vw" />
           <span className="room-story__art-caption">A long evening<br />starts here.</span>
         </div>
         <div className="room-story__copy">
@@ -484,11 +483,8 @@ export default function RestaurantExperience() {
 function DishCard({ dish, index }: { dish: Dish; index: number }) {
   return (
     <article className="dish-card">
-      <div className="dish-card__photo" aria-label={`Photo placeholder for ${dish.name}`}>
-        <span className="photo-placeholder">
-          <span className="photo-placeholder__mark" aria-hidden="true">✳</span>
-          Food photograph
-        </span>
+      <div className="dish-card__photo">
+        <Image src={encodeURI(dish.image)} alt={dish.alt} fill sizes="(max-width: 760px) 82vw, 285px" />
         <span className="dish-card__number">{String(index + 1).padStart(2, "0")}</span>
       </div>
       <div className="dish-card__body">
