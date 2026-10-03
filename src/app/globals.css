@@ -869,6 +869,36 @@ img { border-radius: 4px; }
 
 
 /* Complete, continuously scrollable drinks book */
+
+.menu-section--food .menu-heading { margin-bottom: 28px; }
+.food-menu-document {
+  width: min(1120px, 100%);
+  height: min(90vh, 1050px);
+  min-height: 650px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid #d8cbbb;
+  background: #fffdf8;
+  box-shadow: 0 24px 60px #42372816;
+}
+.food-menu-document iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fffdf8;
+}
+.food-menu-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  width: min(1120px, 100%);
+  margin: 18px auto 0;
+  color: #86212b;
+  font-size: 12px;
+}
+.food-menu-actions a { text-underline-offset: 4px; }
+
 .menu-section--complete {
   min-height: auto;
   align-items: stretch;
@@ -999,6 +1029,8 @@ img { border-radius: 4px; }
 }
 .menu-section--complete .menu-note { margin: 14px auto 0; color: #6a635a; font-size: 10px; }
 @media (max-width: 760px) {
+  .food-menu-document { height: 75svh; min-height: 540px; }
+  .food-menu-actions { flex-wrap: wrap; font-size: 11px; }
   .menu-section--complete {
     padding: 76px 18px 70px;
     align-items: stretch;
