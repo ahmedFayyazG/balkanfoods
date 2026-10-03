@@ -11,33 +11,77 @@ gsap.registerPlugin(ScrollTrigger);
 // ScrollTrigger measurements stable while the address bar expands or collapses.
 ScrollTrigger.config({ ignoreMobileResize: true });
 
-type MenuCategory = "To Begin" | "From the Grill" | "Balkan Classics" | "Sweet Things";
-type Dish = { name: string; detail: string; price: string; image: string; alt: string };
+type MenuCategory = "Red Wine" | "White Wine" | "Rose Wine" | "Beers" | "Spirits" | "Liqueurs" | "Soft Drinks" | "Hot Drinks";
+type Drink = { name: string; detail: string; price: string };
 
-const menu: Record<MenuCategory, Dish[]> = {
-  "To Begin": [
-    { name: "Warm lepinja", detail: "House bread, ajvar, whipped kajmak", price: "£6", image: "/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (2).jpeg", alt: "A Balkan sharing spread with bread and sides" },
-    { name: "Shopska salad", detail: "Tomato, cucumber, peppers, grated sirene", price: "£9", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (3).jpeg", alt: "Fresh Balkan salads and soup" },
-    { name: "Balkan mezze", detail: "Ajvar, olives, sirene, pickled vegetables", price: "£13", image: "/images/WhatsApp Image 2026-09-30 at 12.34.14 pm (1).jpeg", alt: "A Balkan mezze board with cheese, olives and pastries" },
-    { name: "Crispy filo parcels", detail: "Spinach, herbs, yoghurt dip", price: "£10", image: "/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (2).jpeg", alt: "A table spread with Balkan pastries and shared plates" },
+const menu: Record<MenuCategory, Drink[]> = {
+  "Red Wine": [
+    { name: "Duka Reserva Superiore", detail: "Albanian · bottle", price: "£60.00" },
+    { name: "Duka Reserva", detail: "Albanian · bottle", price: "£50.00" },
+    { name: "Duka Tempranillo", detail: "Albanian · bottle", price: "£40.00" },
+    { name: "Amicale", detail: "Bottle", price: "£40.00" },
+    { name: "Primitivo", detail: "Bottle", price: "£40.00" },
+    { name: "Valpolicella", detail: "Bottle", price: "£30.00" },
+    { name: "Chianti Classico", detail: "Bottle", price: "£30.00" },
+    { name: "Shiraz", detail: "125ml £4.00 · 175ml £6.00 · 250ml £8.00", price: "Bottle £25.00" },
   ],
-  "From the Grill": [
-    { name: "Ćevapi", detail: "Grilled beef and lamb, flatbread, kajmak, onion", price: "£19", image: "/images/WhatsApp Image 2026-09-30 at 6.53.50 pm.jpeg", alt: "Grilled ćevapi served on a plate" },
-    { name: "Pljeskavica", detail: "Balkan-style grilled patty, ajvar, fries", price: "£21", image: "/images/WhatsApp Image 2026-09-30 at 12.34.15 pm.jpeg", alt: "Grilled Balkan meat and steak platter" },
-    { name: "Mixed grill for two", detail: "Ćevapi, chicken, sausage, flatbread, sides", price: "£46", image: "/images/WhatsApp Image 2026-09-30 at 12.34.14 pm.jpeg", alt: "A generous mixed grill platter" },
-    { name: "Grilled chicken skewers", detail: "Marinated chicken, lemon, herb salad", price: "£18", image: "/images/WhatsApp Image 2026-09-30 at 6.53.54 pm (1).jpeg", alt: "Roast chicken with sides from the kitchen" },
+  "White Wine": [
+    { name: "Duka White Shesh", detail: "Albanian · bottle", price: "£30.00" },
+    { name: "Pinot Grigio", detail: "125ml £4.00 · 175ml £6.00 · 250ml £8.00", price: "Bottle £25.00" },
   ],
-  "Balkan Classics": [
-    { name: "Sarma", detail: "Slow-cooked cabbage rolls, rice, smoked paprika", price: "£18", image: "/images/WhatsApp Image 2026-09-30 at 6.53.49 pm.jpeg", alt: "A slow-cooked Balkan dish from the kitchen" },
-    { name: "Burek", detail: "Flaky pastry, spiced beef, cultured yoghurt", price: "£16", image: "/images/WhatsApp Image 2026-09-30 at 6.34.00 pm (2).jpeg", alt: "A Balkan sharing board with pastries and sides" },
-    { name: "Stuffed peppers", detail: "Rice, herbs, tomato, seasonal greens", price: "£17", image: "/images/WhatsApp Image 2026-09-30 at 6.53.50 pm (1).jpeg", alt: "A baked Balkan dish from the oven" },
-    { name: "Slow-braised lamb", detail: "Root vegetables, rosemary, pan juices", price: "£25", image: "/images/WhatsApp Image 2026-09-30 at 6.53.49 pm.jpeg", alt: "Slow-cooked meat prepared in the kitchen" },
+  "Rose Wine": [
+    { name: "Pinot Grigio Blush", detail: "125ml £4.00 · 175ml £6.00 · 250ml £8.00", price: "Bottle £25.00" },
   ],
-  "Sweet Things": [
-    { name: "Baklava", detail: "Walnut, honey, orange blossom", price: "£8", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg", alt: "A plated Balkan dessert" },
-    { name: "Tufahija", detail: "Poached apple, walnut, vanilla cream", price: "£8", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg", alt: "A plated Balkan dessert" },
-    { name: "Warm palačinke", detail: "Thin pancakes, chocolate, toasted hazelnut", price: "£9", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg", alt: "A plated Balkan dessert" },
-    { name: "Seasonal sorbet", detail: "Three scoops, changing with the season", price: "£7", image: "/images/WhatsApp Image 2026-09-30 at 6.33.59 pm (1).jpeg", alt: "A plated dessert" },
+  "Beers": [
+    { name: "PEJA", detail: "Albanian Pilsner", price: "£4.50" },
+    { name: "Corona", detail: "Beer", price: "£4.50" },
+    { name: "Heineken", detail: "Beer", price: "£4.50" },
+    { name: "Budweiser", detail: "Beer", price: "£4.00" },
+    { name: "Peroni – Nastro Azzurro", detail: "Beer", price: "£4.00" },
+  ],
+  "Spirits": [
+    { name: "Whiskey", detail: "Monkey Shoulder, Jameson, Jack Daniel’s, JW Red Label, JW Black Label", price: "Single £4.50 · Double £9.00" },
+    { name: "Gin", detail: "Tanqueray London Dry Gin, Bombay Sapphire, Gordon’s", price: "Single £4.00 · Double £8.00" },
+    { name: "Brandy", detail: "Remy Martin V.S.O.P, Vecchia Romagna Riserva, Skenderbeu (Albanian)", price: "Single £4.00 · Double £8.00" },
+    { name: "Rum", detail: "Bacardi, Captain Morgan Spiced Gold", price: "Single £4.00 · Double £8.00" },
+    { name: "Vodka", detail: "Absolut, Grey Goose", price: "Single £4.00 · Double £8.00" },
+  ],
+  "Liqueurs": [
+    { name: "Baileys", detail: "Single or double", price: "£4.50 · £9.00" },
+    { name: "Disarono", detail: "Single or double", price: "£4.50 · £9.00" },
+    { name: "Lemoncello", detail: "Single or double", price: "£4.00 · £8.00" },
+    { name: "Orange Pong", detail: "Albanian · single or double", price: "£4.00 · £8.00" },
+    { name: "Raki", detail: "Single or double", price: "£3.50 · £7.00" },
+  ],
+  "Soft Drinks": [
+    { name: "Bravo Peach", detail: "Pjeshke", price: "£2.50" },
+    { name: "Bravo Apple", detail: "Molle", price: "£2.50" },
+    { name: "Bravo Strawberry", detail: "Luleshtrydhye", price: "£2.50" },
+    { name: "Bravo Red Grape", detail: "Rrushi", price: "£2.50" },
+    { name: "Fanta Exotic", detail: "Soft drink", price: "£2.50" },
+    { name: "B52", detail: "Energy drink", price: "£2.00" },
+    { name: "Red Bull", detail: "Energy drink", price: "£2.50" },
+    { name: "Lemon Soda", detail: "Soft drink", price: "£2.50" },
+    { name: "San Pellegrino Orange", detail: "Soft drink", price: "£2.50" },
+    { name: "Coca Cola", detail: "Soft drink", price: "£2.00" },
+    { name: "Diet Coke", detail: "Soft drink", price: "£2.00" },
+    { name: "Fanta Orange", detail: "Soft drink", price: "£2.00" },
+    { name: "Still Water", detail: "Water", price: "£2.00" },
+    { name: "Premium Still Water", detail: "Water", price: "£2.50" },
+    { name: "Strathmore Still Water", detail: "Water", price: "£2.50" },
+    { name: "Strathmore Sparkling Water", detail: "Sparkling water", price: "£2.50" },
+    { name: "Dhallt", detail: "Traditional Albanian drink", price: "£2.00" },
+  ],
+  "Hot Drinks": [
+    { name: "Single Espresso", detail: "Coffee", price: "£2.00" },
+    { name: "Double Espresso", detail: "Coffee", price: "£3.00" },
+    { name: "Single Machiato", detail: "Coffee", price: "£2.50" },
+    { name: "Double Machiato", detail: "Coffee", price: "£3.50" },
+    { name: "Latte", detail: "Coffee", price: "£3.50" },
+    { name: "Cappuccino", detail: "Coffee", price: "£3.50" },
+    { name: "Americano", detail: "Coffee", price: "£2.50" },
+    { name: "Hot Chocolate", detail: "Hot drink", price: "£3.50" },
+    { name: "Freddo Espresso", detail: "Cold espresso", price: "£3.00" },
   ],
 };
 
@@ -48,7 +92,7 @@ export default function RestaurantExperience() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const [category, setCategory] = useState<MenuCategory>("To Begin");
+  const [category, setCategory] = useState<MenuCategory>("Red Wine");
   const [bookingMessage, setBookingMessage] = useState("");
   const [hasScrolled, setHasScrolled] = useState(false);
 
@@ -307,8 +351,8 @@ export default function RestaurantExperience() {
       <section className="menu-section" id="menu" aria-labelledby="menu-title">
         <div className="menu-heading">
           <span className="eyebrow">A little something for everyone</span>
-          <h2 id="menu-title">The menu book</h2>
-          <p>Open the book, then swipe through the dishes.</p>
+          <h2 id="menu-title">The drinks menu</h2>
+          <p>Browse wines, spirits, Albanian favourites and more.</p>
         </div>
         <div className="book-wrap">
           <div className="menu-book" aria-label={`${category} menu`}>
@@ -317,13 +361,13 @@ export default function RestaurantExperience() {
               <div className="book-page book-page--left">
                 <span className="page-kicker">Balkan Foods · Manchester</span>
                 <h3>{category}</h3>
-                <p className="book-prompt">Swipe the dish cards<br />to explore this chapter.</p>
+                <p className="book-prompt">Browse the drinks<br />in this chapter.</p>
                 <span className="book-page-mark" aria-hidden="true">0{categories.indexOf(category) + 1}</span>
                 <span className="page-number">{String(categories.indexOf(category) * 2 + 1).padStart(2, "0")}</span>
               </div>
               <div className="book-page book-page--right">
                 <span className="page-kicker">Cooked with care · Shared with love</span>
-                <p className="book-page-note">Albanian flavours,<br />made for sharing.</p>
+                <p className="book-page-note">A drink for every<br />kind of evening.</p>
                 <div className="page-bottom-note">Swipe to browse · Tap a chapter</div>
                 <span className="page-number">{String(categories.indexOf(category) * 2 + 2).padStart(2, "0")}</span>
               </div>
@@ -350,16 +394,16 @@ export default function RestaurantExperience() {
             ))}
           </div>
           <div className="carousel-toolbar">
-            <p><span>{dishes.length.toString().padStart(2, "0")}</span> dishes · Swipe to browse</p>
+            <p><span>{dishes.length.toString().padStart(2, "0")}</span> drinks · Swipe to browse</p>
             <div className="carousel-arrows">
               <button type="button" aria-label="Previous dishes" onClick={() => moveCarousel(-1)}>←</button>
               <button type="button" aria-label="Next dishes" onClick={() => moveCarousel(1)}>→</button>
             </div>
           </div>
           <div className="dish-carousel" ref={carouselRef} aria-label={`${category} dishes`} tabIndex={0}>
-            {dishes.map((dish, index) => <DishCard key={dish.name} dish={dish} index={index} />)}
+            {dishes.map((drink, index) => <DrinkCard key={drink.name} drink={drink} category={category} index={index} />)}
           </div>
-          <p className="menu-note">Swipe through the menu chapters to explore our dishes.</p>
+          <p className="menu-note">Prices shown as listed. <a href={encodeURI("/images/Balkan Food Restaurant 278x297mm Drink Menu 21May25 2.pdf")} target="_blank" rel="noreferrer">View the original drinks menu ↗</a></p>
         </div>
       </section>
 
@@ -480,16 +524,17 @@ export default function RestaurantExperience() {
   );
 }
 
-function DishCard({ dish, index }: { dish: Dish; index: number }) {
+function DrinkCard({ drink, category, index }: { drink: Drink; category: MenuCategory; index: number }) {
   return (
-    <article className="dish-card">
-      <div className="dish-card__photo">
-        <Image src={encodeURI(dish.image)} alt={dish.alt} fill sizes="(max-width: 760px) 82vw, 285px" />
+    <article className="dish-card drink-card">
+      <div className="drink-card__top">
         <span className="dish-card__number">{String(index + 1).padStart(2, "0")}</span>
+        <span className="drink-card__category">BALKAN FOODS · {category}</span>
+        <span className="drink-card__seal" aria-hidden="true">BF</span>
       </div>
       <div className="dish-card__body">
-        <div className="dish-card__heading"><h3>{dish.name}</h3><span>{dish.price}</span></div>
-        <p>{dish.detail}</p>
+        <div className="dish-card__heading"><h3>{drink.name}</h3><span>{drink.price}</span></div>
+        <p>{drink.detail}</p>
       </div>
     </article>
   );
