@@ -8,14 +8,14 @@
   --gold: #c8102e;
   --gold-light: #e31837;
   --muted: #777777;
-  --serif: "Clash Grotesk", sans-serif;
-  --sans: "Clash Grotesk", sans-serif;
+  --serif: "Satoshi", sans-serif;
+  --sans: "Satoshi", sans-serif;
 }
 
-* { box-sizing: border-box; font-family: "Clash Grotesk", sans-serif !important; font-style: normal !important; font-weight: 500 !important; }
+* { box-sizing: border-box; font-family: "Satoshi", sans-serif !important; font-style: normal !important; font-weight: 700 !important; }
 html { background: var(--night); }
 @media (min-width: 761px) { html { scroll-behavior: smooth; } }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 700; }
 a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; }
 button { color: inherit; }
