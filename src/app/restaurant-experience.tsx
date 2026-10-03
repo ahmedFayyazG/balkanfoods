@@ -282,7 +282,7 @@ export default function RestaurantExperience() {
   useEffect(() => {
     const section = dishScrollRef.current;
     const video = dishVideoRef.current;
-    if (!section || !video || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!section || !video) return;
 
     const cues = gsap.utils.toArray<HTMLElement>(".dish-scroll__cue", section);
     const progressBar = section.querySelector<HTMLElement>(".dish-scroll__progress-bar");
@@ -292,6 +292,8 @@ export default function RestaurantExperience() {
     let latestProgress = 0;
     let mobileSeekPending = false;
     let handleSeeked: (() => void) | undefined;
+    let nativeScrollHandler: (() => void) | undefined;
+    let nativeScrollFrame = 0;
 
     const setupScrollAnimation = () => {
       if (initialized || !Number.isFinite(video.duration) || video.duration <= 0) return;
@@ -312,35 +314,48 @@ export default function RestaurantExperience() {
         }
       };
 
+      const updateScene = (progress: number) => {
+        const clamped = Math.max(0, Math.min(1, progress));
+        seekVideo(clamped);
+        const activeCue = Math.min(cues.length - 1, Math.floor(clamped * cues.length));
+        cues.forEach((cue, index) => cue.classList.toggle("is-active", index === activeCue));
+        if (progressBar) progressBar.style.transform = `scaleX(${clamped})`;
+      };
+
       const catchUpAfterSeek = () => {
         mobileSeekPending = false;
         if (mobileScrub && Math.abs(video.currentTime - latestProgress * duration) > 0.05) {
-          requestAnimationFrame(() => seekVideo(latestProgress));
+          requestAnimationFrame(() => updateScene(latestProgress));
         }
       };
-
       handleSeeked = catchUpAfterSeek;
       video.addEventListener("seeked", catchUpAfterSeek);
 
-      const updateScene = (progress: number) => {
-        seekVideo(progress);
-        const activeCue = Math.min(cues.length - 1, Math.floor(progress * cues.length));
-        cues.forEach((cue, index) => cue.classList.toggle("is-active", index === activeCue));
-        if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
-      };
-
-      context = gsap.context(() => {
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top top",
-          end: "bottom bottom",
-          invalidateOnRefresh: true,
-          onUpdate: (self) => updateScene(self.progress),
-          onRefresh: (self) => updateScene(self.progress),
-        });
-      }, section);
-
-      ScrollTrigger.refresh();
+      if (mobileScrub) {
+        nativeScrollHandler = () => {
+          if (nativeScrollFrame) return;
+          nativeScrollFrame = requestAnimationFrame(() => {
+            nativeScrollFrame = 0;
+            const scrollRange = Math.max(1, section.offsetHeight - window.innerHeight);
+            updateScene(-section.getBoundingClientRect().top / scrollRange);
+          });
+        };
+        window.addEventListener("scroll", nativeScrollHandler, { passive: true });
+        window.addEventListener("resize", nativeScrollHandler, { passive: true });
+        nativeScrollHandler();
+      } else {
+        context = gsap.context(() => {
+          ScrollTrigger.create({
+            trigger: section,
+            start: "top top",
+            end: "bottom bottom",
+            invalidateOnRefresh: true,
+            onUpdate: (self) => updateScene(self.progress),
+            onRefresh: (self) => updateScene(self.progress),
+          });
+        }, section);
+        ScrollTrigger.refresh();
+      }
     };
 
     video.addEventListener("loadedmetadata", setupScrollAnimation);
@@ -349,6 +364,11 @@ export default function RestaurantExperience() {
     return () => {
       video.removeEventListener("loadedmetadata", setupScrollAnimation);
       if (handleSeeked) video.removeEventListener("seeked", handleSeeked);
+      if (nativeScrollHandler) {
+        window.removeEventListener("scroll", nativeScrollHandler);
+        window.removeEventListener("resize", nativeScrollHandler);
+      }
+      if (nativeScrollFrame) cancelAnimationFrame(nativeScrollFrame);
       context?.revert();
     };
   }, []);
