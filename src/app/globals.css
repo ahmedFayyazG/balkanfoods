@@ -57,7 +57,8 @@ button { color: inherit; }
 .story-section { position: relative; isolation: isolate; min-height: 720px; padding: 112px 10vw; display: grid; grid-template-columns: minmax(250px, .88fr) minmax(0, 1fr); gap: clamp(54px, 8vw, 126px); align-items: center; overflow: hidden; background: #eee8dc; }
 .story-section:before { content: ""; position: absolute; z-index: -1; top: 0; right: 0; width: 42%; height: 100%; background: linear-gradient(135deg, #e7dfd0, #f2ede3); }
 .story-section__image { isolation: isolate; min-height: 520px; position: relative; display: flex; align-items: end; padding: 32px; overflow: hidden; color: #fbf3e5; background: radial-gradient(ellipse at 54% 57%, #a88049 0, #725536 15%, transparent 36%), radial-gradient(ellipse at 52% 50%, #423a2a 0, #26241d 56%, #181915 100%); box-shadow: 0 25px 55px #3027192a; }
-.story-section__image > img { z-index: -1; object-fit: cover; object-position: center; }\n.story-section__image:before { z-index: 0; content: ""; position: absolute; inset: 10% 13% 0; border: 1px solid #d7b66f80; border-bottom: 0; border-radius: 50% 50% 0 0 / 26% 26% 0 0; background: linear-gradient(90deg, #11130f 0 9%, #ffffff08 9% 11%, transparent 11% 89%, #ffffff08 89% 91%, #11130f 91%), linear-gradient(0deg, #151610 0 16%, transparent 16%), radial-gradient(ellipse at 50% 45%, #c69a5e55, transparent 50%); box-shadow: inset 0 0 90px #d6a35424; }
+.story-section__image > img { z-index: -1; object-fit: cover; object-position: center; }
+.story-section__image:before { z-index: 0; content: ""; position: absolute; inset: 10% 13% 0; border: 1px solid #d7b66f80; border-bottom: 0; border-radius: 50% 50% 0 0 / 26% 26% 0 0; background: linear-gradient(90deg, #11130f 0 9%, #ffffff08 9% 11%, transparent 11% 89%, #ffffff08 89% 91%, #11130f 91%), linear-gradient(0deg, #151610 0 16%, transparent 16%), radial-gradient(ellipse at 50% 45%, #c69a5e55, transparent 50%); box-shadow: inset 0 0 90px #d6a35424; }
 .story-section__image:after { z-index: 0; content: ""; position: absolute; inset: auto 0 0; height: 42%; background: linear-gradient(0deg, #11120f 5%, #11120f00); }
 .story-section__image span { position: relative; z-index: 1; z-index: 1; max-width: 250px; font: 400 clamp(29px, 3vw, 42px)/1.02 var(--serif); letter-spacing: -.035em; }
 .story-section__copy { max-width: 570px; padding-block: 20px; }
@@ -114,7 +115,8 @@ button { color: inherit; }
 .dish-carousel::-webkit-scrollbar { display: none; }
 .dish-card { flex: 0 0 285px; overflow: hidden; scroll-snap-align: start; background: #f5f0e3; color: #2e2a22; box-shadow: 0 14px 30px #08080655; }
 .dish-card__photo { isolation: isolate; height: 190px; position: relative; display: grid; place-items: center; overflow: hidden; background: radial-gradient(ellipse at 51% 50%, #99764b 0, #493c2b 36%, #29271f 72%); }
-.dish-card__photo > img { z-index: -1; object-fit: cover; }\n.dish-card__photo:before { z-index: 0; content: ""; position: absolute; inset: 12px; border: 1px solid #d0b87855; }
+.dish-card__photo > img { z-index: -1; object-fit: cover; }
+.dish-card__photo:before { z-index: 0; content: ""; position: absolute; inset: 12px; border: 1px solid #d0b87855; }
 .photo-placeholder { position: relative; display: grid; justify-items: center; gap: 9px; color: #e7d7b5; font-size: 8px; letter-spacing: .2em; text-transform: uppercase; }
 .photo-placeholder__mark { font-size: 30px; color: #c7a864; }
 .dish-card__number { z-index: 1; position: absolute; top: 18px; left: 19px; color: #f6eedc; font: 12px var(--serif); }
@@ -153,7 +155,8 @@ button { color: inherit; }
 .signature-card__image:before { display: none; content: ""; position: absolute; width: 56%; aspect-ratio: 1; border: 1px solid #e0c38566; border-radius: 50%; background: radial-gradient(ellipse at 45% 40%, #c3935c, #795239 58%, #3e3025 63%, transparent 65%); box-shadow: 0 17px 40px #09080670; transform: rotate(-9deg); }
 .signature-card__image--2:before { width: 63%; border-radius: 44%; transform: rotate(8deg); background: radial-gradient(ellipse at 44% 38%, #c69d6c, #845c3c 58%, #433228 63%, transparent 66%); }
 .signature-card__image--3:before { width: 50%; transform: rotate(-3deg); background: radial-gradient(ellipse at 45% 40%, #dbb57c, #9d6c50 58%, #55402f 63%, transparent 66%); }
-.signature-card__photo { object-fit: cover; }\n.signature-card__image:after { content: ""; position: absolute; inset: 0; border: 1px solid #ffffff20; background: linear-gradient(0deg, #11120fa8, transparent 58%); pointer-events: none; }
+.signature-card__photo { object-fit: cover; }
+.signature-card__image:after { content: ""; position: absolute; inset: 0; border: 1px solid #ffffff20; background: linear-gradient(0deg, #11120fa8, transparent 58%); pointer-events: none; }
 .signature-card__label { position: absolute; z-index: 1; top: 23px; left: 22px; color: #f0ddb9; font-size: 7px; letter-spacing: .17em; }
 .signature-card__index { position: absolute; z-index: 1; top: 21px; right: 22px; color: #f0ddb9; font: 13px var(--serif); }
 .signature-card__image-note { position: relative; z-index: 1; margin-top: 70%; color: #fff5e5b8; font-size: 7px; letter-spacing: .14em; text-transform: uppercase; }
@@ -165,7 +168,8 @@ button { color: inherit; }
 .signature-hint { display: none; }
 .room-story { min-height: 610px; padding: 100px 10vw; display: grid; grid-template-columns: minmax(280px, .9fr) 1fr; gap: 9vw; align-items: center; overflow: hidden; background: #eee8dc; color: #28251f; }
 .room-story__art { isolation: isolate; min-height: 430px; position: relative; display: flex; align-items: end; padding: 30px; overflow: hidden; background: radial-gradient(ellipse at 50% 54%, #b9824d 0, #755336 19%, #302a20 48%, #191a16 84%); box-shadow: 0 20px 48px #2822182b; }
-.room-story__art > img { z-index: -1; object-fit: cover; object-position: center; }\n.room-story__art:before { z-index: 0; content: ""; position: absolute; inset: 0; border: 0; border-radius: 0; background: linear-gradient(0deg, #11130fc9, #11130f18 70%), linear-gradient(90deg,#15161133,#ffffff08 50%,#15161133); box-shadow: none; /* border: 1px solid #dfc38280; border-bottom: 0; border-radius: 50% 50% 0 0 / 29% 29% 0 0; background: linear-gradient(90deg,#151611 0 8%,transparent 8% 92%,#151611 92%), linear-gradient(0deg,#171814 0 18%,transparent 18%); box-shadow: inset 0 0 90px #dfb66a24; */ }
+.room-story__art > img { z-index: -1; object-fit: cover; object-position: center; }
+.room-story__art:before { z-index: 0; content: ""; position: absolute; inset: 0; border: 0; border-radius: 0; background: linear-gradient(0deg, #11130fc9, #11130f18 70%), linear-gradient(90deg,#15161133,#ffffff08 50%,#15161133); box-shadow: none; }
 .room-story__arch { display: none; position: absolute; z-index: 1; bottom: 0; width: 29%; height: 39%; border: 1px solid #d8bc8166; border-bottom: 0; border-radius: 50% 50% 0 0 / 35% 35% 0 0; background: linear-gradient(180deg, #d8a86118, #171914); }
 .room-story__arch--back { left: 21%; }
 .room-story__arch--front { right: 18%; height: 49%; background: linear-gradient(180deg, #ddb77421, #131511); }
@@ -223,9 +227,12 @@ button { color: inherit; }
   .chapter h2 { font-size: clamp(48px, 11vw, 68px); }
   .chapter p { max-width: 310px; margin-inline: auto; line-height: 1.7; }
   .scene-count { display: none; }
-  .story-section { min-height: auto; padding: 76px 7vw 66px; grid-template-columns: 1fr; gap: 28px; }\n  .story-section__copy { order: 1; padding: 0; }
-  .story-section__image { order: 2; min-height: min(76vw, 360px); padding: 25px; }\n  .story-section__image span { max-width: 210px; font-size: 32px; }
-  .story-section h2 { margin: 17px 0; font-size: clamp(47px, 12vw, 64px); }\n  .story-section__copy > p { font-size: 13px; line-height: 1.8; }
+  .story-section { min-height: auto; padding: 76px 7vw 66px; grid-template-columns: 1fr; gap: 28px; }
+  .story-section__copy { order: 1; padding: 0; }
+  .story-section__image { order: 2; min-height: min(76vw, 360px); padding: 25px; }
+  .story-section__image span { max-width: 210px; font-size: 32px; }
+  .story-section h2 { margin: 17px 0; font-size: clamp(47px, 12vw, 64px); }
+  .story-section__copy > p { font-size: 13px; line-height: 1.8; }
   .menu-section { min-height: auto; padding: 75px 5vw 52px; }
   .menu-heading { margin-bottom: 24px; }
   .menu-book { min-height: 0; aspect-ratio: 1.55 / 1; }
