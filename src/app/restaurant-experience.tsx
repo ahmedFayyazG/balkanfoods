@@ -91,7 +91,6 @@ export default function RestaurantExperience() {
   const cinemaRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
   const [category, setCategory] = useState<MenuCategory>("Red Wine");
   const [bookingMessage, setBookingMessage] = useState("");
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -288,16 +287,7 @@ export default function RestaurantExperience() {
   };
 
   const dishes = menu[category];
-
-  useEffect(() => {
-    carouselRef.current?.scrollTo({ left: 0, behavior: "auto" });
-  }, [category]);
-
-  const moveCarousel = (direction: -1 | 1) => {
-    const carousel = carouselRef.current;
-    if (!carousel) return;
-    carousel.scrollBy({ left: direction * carousel.clientWidth * 0.78, behavior: "smooth" });
-  };
+  const pageBreak = Math.ceil(dishes.length / 2);
 
   return (
     <main>
@@ -352,28 +342,17 @@ export default function RestaurantExperience() {
         <div className="menu-heading">
           <span className="eyebrow">A little something for everyone</span>
           <h2 id="menu-title">The drinks menu</h2>
-          <p>Browse wines, spirits, Albanian favourites and more.</p>
+          <p>Wines, spirits, Albanian favourites and something for every table.</p>
         </div>
         <div className="book-wrap">
           <div className="menu-book" aria-label={`${category} menu`}>
             <div className="book-spine" aria-hidden="true" />
             <div className="book-pages">
-              <div className="book-page book-page--left">
-                <span className="page-kicker">Balkan Foods · Manchester</span>
-                <h3>{category}</h3>
-                <p className="book-prompt">Browse the drinks<br />in this chapter.</p>
-                <span className="book-page-mark" aria-hidden="true">0{categories.indexOf(category) + 1}</span>
-                <span className="page-number">{String(categories.indexOf(category) * 2 + 1).padStart(2, "0")}</span>
-              </div>
-              <div className="book-page book-page--right">
-                <span className="page-kicker">Cooked with care · Shared with love</span>
-                <p className="book-page-note">A drink for every<br />kind of evening.</p>
-                <div className="page-bottom-note">Swipe to browse · Tap a chapter</div>
-                <span className="page-number">{String(categories.indexOf(category) * 2 + 2).padStart(2, "0")}</span>
-              </div>
+              <MenuBookPage items={dishes.slice(0, pageBreak)} category={category} page={categories.indexOf(category) * 2 + 1} side="left" />
+              <MenuBookPage items={dishes.slice(pageBreak)} category={category} page={categories.indexOf(category) * 2 + 2} side="right" />
             </div>
             <div className="book-cover" aria-hidden="true">
-              <span className="cover-small">BALKAN FOODS</span>
+              <span className="cover-small">BALKAN FOODS · MANCHESTER</span>
               <span className="cover-rule" />
               <span className="cover-title">The<br /><em>Menu</em></span>
               <span className="cover-bottom">GOOD FOOD · GOOD COMPANY</span>
@@ -382,28 +361,12 @@ export default function RestaurantExperience() {
           </div>
           <div className="menu-controls" aria-label="Menu chapters">
             {categories.map((item, index) => (
-              <button
-                key={item}
-                type="button"
-                className={`chapter-tab${category === item ? " is-active" : ""}`}
-                aria-pressed={category === item}
-                onClick={() => setCategory(item)}
-              >
+              <button key={item} type="button" className={`chapter-tab${category === item ? " is-active" : ""}`} aria-pressed={category === item} onClick={() => setCategory(item)}>
                 <span>0{index + 1}</span>{item}
               </button>
             ))}
           </div>
-          <div className="carousel-toolbar">
-            <p><span>{dishes.length.toString().padStart(2, "0")}</span> drinks · Swipe to browse</p>
-            <div className="carousel-arrows">
-              <button type="button" aria-label="Previous dishes" onClick={() => moveCarousel(-1)}>←</button>
-              <button type="button" aria-label="Next dishes" onClick={() => moveCarousel(1)}>→</button>
-            </div>
-          </div>
-          <div className="dish-carousel" ref={carouselRef} aria-label={`${category} dishes`} tabIndex={0}>
-            {dishes.map((drink, index) => <DrinkCard key={drink.name} drink={drink} category={category} index={index} />)}
-          </div>
-          <p className="menu-note">Prices shown as listed. <a href={encodeURI("/images/Balkan Food Restaurant 278x297mm Drink Menu 21May25 2.pdf")} target="_blank" rel="noreferrer">View the original drinks menu ↗</a></p>
+          <p className="menu-note">Select a chapter to turn the pages. <a href={encodeURI("/images/Balkan Food Restaurant 278x297mm Drink Menu 21May25 2.pdf")} target="_blank" rel="noreferrer">View the original menu ↗</a></p>
         </div>
       </section>
 
@@ -524,18 +487,23 @@ export default function RestaurantExperience() {
   );
 }
 
-function DrinkCard({ drink, category, index }: { drink: Drink; category: MenuCategory; index: number }) {
+function MenuBookPage({ items, category, page, side }: { items: Drink[]; category: MenuCategory; page: number; side: "left" | "right" }) {
   return (
-    <article className="dish-card drink-card">
-      <div className="drink-card__top">
-        <span className="dish-card__number">{String(index + 1).padStart(2, "0")}</span>
-        <span className="drink-card__category">BALKAN FOODS · {category}</span>
-        <span className="drink-card__seal" aria-hidden="true">BF</span>
+    <div className={`book-page book-page--${side}`}>
+      <span className="page-kicker">{side === "left" ? "Balkan Foods · Manchester" : "From our drinks list"}</span>
+      {side === "left" && <h3>{category}</h3>}
+      <div className="book-menu-list">
+        {items.map((item) => (
+          <div className="book-menu-item" key={item.name}>
+            <div className="book-menu-item__top">
+              <h4>{item.name}</h4>
+              <span>{item.price}</span>
+            </div>
+            <p>{item.detail}</p>
+          </div>
+        ))}
       </div>
-      <div className="dish-card__body">
-        <div className="dish-card__heading"><h3>{drink.name}</h3><span>{drink.price}</span></div>
-        <p>{drink.detail}</p>
-      </div>
-    </article>
+      <span className="page-number">{String(page).padStart(2, "0")}</span>
+    </div>
   );
 }
